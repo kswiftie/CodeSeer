@@ -31,7 +31,7 @@ class RepoHandler:
             # print(ex)
             return "", 0
 
-    def get_list_of_files_in_folder(self, folder_url: str) -> list:
+    def get_list_of_files_in_folder(self, folder_url: str) -> list[dict[str, str]]:
         """
 
         :param folder_url:
@@ -55,7 +55,7 @@ class RepoHandler:
 
         return files_list
 
-    def get_list_of_folders_in_folder(self, folder_url: str) -> list:
+    def get_list_of_folders_in_folder(self, folder_url: str) -> list[dict[str, str]]:
         """
 
         :param folder_url:

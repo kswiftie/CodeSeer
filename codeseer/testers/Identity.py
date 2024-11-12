@@ -13,7 +13,7 @@ class IdentityInspection:
     def __init__(self, repo_handler):
         self.repo_handler = repo_handler
 
-    def compare_sizes_in_folders(self, folder1_url: str, folder2_url: str):
+    def compare_sizes_in_folders(self, folgder1_url: str, folder2_url: str):
         """
         Function compares the sizes of files and folders in repositories
         :return:
