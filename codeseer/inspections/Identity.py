@@ -10,16 +10,25 @@ class IdentityInspection:
     Class for the simplest checks of two repositories
     """
 
-    def __init__(self, repo_handler):
+    def __init__(self, repo_handler: RepoHandler):
+        """
+        We set the repository handler for the verification class,
+        which this class will use to access the content on GitHub
+
+        Parametrs
+        ---------
+        repo_handler: object
+            A pointer to the repository handler class
+        """
+
         self.repo_handler = repo_handler
 
-    def compare_sizes_in_folders(self, folgder1_url: str, folder2_url: str):
+    def compare_sizes_in_folders(self, folder1_url: str, folder2_url: str):
         """
         Function compares the sizes of files and folders in repositories
         :return:
         """
-        folder1_size, folder2_size = 0, 0
-
+        folder1_size, folder2_size = 0.0, 0.0
         folder1_folders = self.repo_handler.get_list_of_folders_in_folder(folder1_url)
         folder2_folders = self.repo_handler.get_list_of_folders_in_folder(folder2_url)
 
@@ -67,7 +76,7 @@ class IdentityInspection:
         """
         Function checks the lengths of the lines in the files and checks how identical they are
 
-        :return:
+
         """
 
         # todo: Decide what to do with file sizes
@@ -87,16 +96,19 @@ class IdentityInspection:
 
 
 class Identity_results_handler(IdentityInspection):
-    AVAILABLE_IDENTITY_INSPECTIONS_LIST = [
+    _AVAILABLE_IDENTITY_INSPECTIONS_LIST = [
         "handle_Identity_compare_sizes_in_folders_results",
         "handle_Identity_compare_names_in_folders",
         "handle_Identity_compare_content_in_repos",
     ]
 
-    def handle_Identity_results(self, *repo_urls) -> str:
-        res = ""
-        for inspection in Identity_results_handler.AVAILABLE_IDENTITY_INSPECTIONS_LIST:
-            res += getattr(self, inspection)(*repo_urls) + "\n\n"
+    def __init__(self, repo_handler):
+        super().__init__(repo_handler)
+
+    def handle_all_inspections_results(self, *repo_urls) -> str:
+        res = "Identity Inspections Results:\n"
+        for inspection in self._AVAILABLE_IDENTITY_INSPECTIONS_LIST:
+            res += getattr(self, inspection)(*repo_urls) + "\n"
 
         return res
 

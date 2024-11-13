@@ -1,31 +1,28 @@
-from codeseer.testers import Identity_results_handler
+from codeseer.inspections import Identity_results_handler, Tokenization_results_handler
 from codeseer.utils_for_repos import RepoHandler
-
-AVALAVLE_INSPECTIONS = ["Identity_inspection"]
 
 
 class ReportsCompiler:
-    def __init__(
-        self, user_github_token: str = "", user_login: str = "", user_password: str = ""
-    ):
+    _AVAILABLE_INSPECTIONS: dict[str, list[str]] = {
+        "Tokenization_results_handler": ["handle_Tokenization_compare_folders_content"],
+        "Identity_results_handler": [
+            "handle_Identity_compare_sizes_in_folders_results",
+            "handle_Identity_compare_names_in_folders",
+        ],
+    }
+
+    def __init__(self, repo_handler: object):
         """
         init
-
-        :param user_github_token:
-        :param user_login:
-        :param user_password:
         """
-        if user_github_token:
-            self.token = user_github_token
 
-        elif user_login and user_password:  # now this is not available to use
-            self.login = user_login
-            self.password = user_password
+        self.repo_handler = repo_handler
 
-        else:
-            raise ValueError("authorization is required")
-
-    def get_report_from_all_inspections(self, *repo_urls) -> str:
+    def get_report_from_inspections(
+            self,
+            inspections_to_do: list[tuple[str, str]] | str = "all",
+            *repo_urls
+    ) -> str:
         """
         The function that will be called by the user.
         Accepts links to repositories and runs everything necessary to get a repository report
@@ -34,11 +31,33 @@ class ReportsCompiler:
 
         :return:
         """
+
         if len(repo_urls) != 2:
             print("At the moment, only 2 repositories can be compared")
             return ""
 
-        indentical_inspections_results = Identity_results_handler(
-            RepoHandler(self.token)
-        )
-        return indentical_inspections_results.handle_Identity_results(*repo_urls)
+        report = ""
+
+        if inspections_to_do == "all":
+            for (
+                    inspection_class_name,
+                    inspection_names,
+            ) in self._AVAILABLE_INSPECTIONS.items():
+                for inspection_name in inspection_names:
+                    report += self.get_report_from_inspection(
+                        inspection_class_name, inspection_name, *repo_urls
+                    )
+
+        elif isinstance(inspections_to_do, list):
+            for inspection_class_name, inspection_name in inspections_to_do:
+                report += self.get_report_from_inspection(
+                    inspection_class_name, inspection_name, *repo_urls
+                )
+
+        return report
+
+    def get_report_from_inspection(
+            self, inspection_class_name: str, inspection_name: str, *repo_urls: list[str]
+    ) -> str:
+        inspection = globals()[inspection_class_name](self.repo_handler)
+        return getattr(inspection, inspection_name)(*repo_urls) + "\n"
