@@ -19,9 +19,7 @@ class ReportsCompiler:
         self.repo_handler = repo_handler
 
     def get_report_from_inspections(
-            self,
-            inspections_to_do: list[tuple[str, str]] | str = "all",
-            *repo_urls
+        self, inspections_to_do: list[tuple[str, str]] | str = "all", *repo_urls
     ) -> str:
         """
         The function that will be called by the user.
@@ -40,8 +38,8 @@ class ReportsCompiler:
 
         if inspections_to_do == "all":
             for (
-                    inspection_class_name,
-                    inspection_names,
+                inspection_class_name,
+                inspection_names,
             ) in self._AVAILABLE_INSPECTIONS.items():
                 for inspection_name in inspection_names:
                     report += self.get_report_from_inspection(
@@ -57,7 +55,7 @@ class ReportsCompiler:
         return report
 
     def get_report_from_inspection(
-            self, inspection_class_name: str, inspection_name: str, *repo_urls: list[str]
+        self, inspection_class_name: str, inspection_name: str, *repo_urls: list[str]
     ) -> str:
         inspection = globals()[inspection_class_name](self.repo_handler)
         return getattr(inspection, inspection_name)(*repo_urls) + "\n"

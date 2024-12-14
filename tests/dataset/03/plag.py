@@ -43,7 +43,7 @@ output = []
 for _ in range(num_queries):
     query = input().strip()
 
-    if query[0] == '0':
+    if query[0] == "0":
         # Update query: update the jump length for an element
         _, index_str, new_jump_str = query.split()
         index = int(index_str) - 1  # Convert to zero-based index
@@ -80,7 +80,7 @@ for _ in range(num_queries):
             curr_idx = end_positions[curr_idx]
 
         # The final position is adjusted by subtracting n to get a valid result
-        output.append(f'{curr_idx - num_elements + 1} {total_jumps}')
+        output.append(f"{curr_idx - num_elements + 1} {total_jumps}")
 
 # Output all the results for the queries
-print('\n'.join(output))
+print("\n".join(output))

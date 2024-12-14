@@ -26,7 +26,9 @@ class CircularDeque:
             return False  # Cannot insert if deque is full
 
         self.buffer[self.rear_index] = value  # Insert the value at the rear
-        self.rear_index = (self.rear_index + 1) % self.capacity  # Move rear index forward
+        self.rear_index = (
+            self.rear_index + 1
+        ) % self.capacity  # Move rear index forward
 
         if self.front_index == -1:
             self.front_index = 0  # Set the front index if deque was empty initially
@@ -81,4 +83,4 @@ class CircularDeque:
 
     def is_full(self) -> bool:
         # Checks if the deque is full.
-        return (self.rear_index == self.front_index)
+        return self.rear_index == self.front_index

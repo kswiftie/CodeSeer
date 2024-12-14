@@ -5,7 +5,9 @@ class CircularDeque:
         The deque stores values in a circular manner using a buffer.
         """
         self.buffer = [0] * max_size  # The deque's internal storage (buffer)
-        self.front_index = -1  # Index to the front element (initialized to -1 for empty deque)
+        self.front_index = (
+            -1
+        )  # Index to the front element (initialized to -1 for empty deque)
         self.rear_index = 0  # Index to the rear element
         self.capacity = max_size  # Maximum capacity of the deque
 

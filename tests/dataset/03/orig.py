@@ -48,7 +48,7 @@ for _ in range(m):
 
     s = input().strip()
 
-    if s[0] == '0':
+    if s[0] == "0":
 
         _, a, b = s.split()
 
@@ -97,6 +97,6 @@ for _ in range(m):
 
             curr = end[curr]
 
-        out.append(str(curr - n + 1) + ' ' + str(jmp))
+        out.append(str(curr - n + 1) + " " + str(jmp))
 
-print('\n'.join(out))
+print("\n".join(out))

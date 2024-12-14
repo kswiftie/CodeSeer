@@ -115,9 +115,7 @@ class TokenizationInspection:
 
         for folder_url in folder_urls:
             folder_code = ""
-            for file in self.repo_handler.get_list_of_files_in_folder(
-                folder_url
-            ):
+            for file in self.repo_handler.get_list_of_files_in_folder(folder_url):
                 folder_code += self.repo_handler.get_file_info(file["url"])[0]
 
             cur_file_tokens, cur_file_counter = self.tokenize_code(folder_code)

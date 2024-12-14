@@ -22,7 +22,9 @@ class AST:
 
         self.data_created = set()
 
-    def build_ast(self, code: str, output_file_name: str, returning_format: object) -> GRAPH_TYPE:
+    def build_ast(
+        self, code: str, output_file_name: str, returning_format: object
+    ) -> GRAPH_TYPE:
         """
         A function for building an AST based on the code provided by the program
         It is recommended to use only this function for building trees
@@ -61,7 +63,9 @@ class AST:
 
         return res_graph
 
-    def build_ast_list_of_edges(self, node: object, parent: str | None = None) -> list[tuple[str, str]]:
+    def build_ast_list_of_edges(
+        self, node: ast.AST, parent: str | None = None
+    ) -> list[tuple[str, str]]:
         """
         Builds an abstract syntactic tree based
         on the program code in the list of edges format
@@ -96,7 +100,7 @@ class AST:
 
         return edges
 
-    def build_ast_adjacency_matrix(self, node: object) -> GRAPH_TYPE:
+    def build_ast_adjacency_matrix(self, node: ast.AST) -> GRAPH_TYPE:
         """
         :param node:
         :return:
@@ -104,7 +108,7 @@ class AST:
 
         graph = nx.DiGraph()
 
-        def dfs(node: object, parent: object | None = None):
+        def dfs(node: ast.AST, parent: object | None = None):
             node_type = type(node).__name__  # Name of the node
             node_id = id(node)  # node ID
 
@@ -157,8 +161,10 @@ class AST:
         bool
             True if the graphs are isomorphic False otherwise
         """
-        if graph1.number_of_nodes() != graph2.number_of_nodes() or \
-                graph1.number_of_edges() != graph2.number_of_edges():  # make program faster
+        if (
+            graph1.number_of_nodes() != graph2.number_of_nodes()
+            or graph1.number_of_edges() != graph2.number_of_edges()
+        ):  # make program faster
             return False
 
         return nx.is_isomorphic(graph1, graph2)
@@ -217,18 +223,29 @@ class AST:
             True if it is an integral part False otherwise
         """
 
-        input_nodes_count = len([node for node in graph.nodes if self.is_input_node(node)])
-        output_nodes_count = len([node for node in graph.nodes if self.is_output_node(node)])
+        input_nodes_count = len(
+            [node for node in graph.nodes if self.is_input_node(node)]
+        )
+        output_nodes_count = len(
+            [node for node in graph.nodes if self.is_output_node(node)]
+        )
 
         nodes_count = len(graph.nodes())
         edges_count = len(graph.edges())
 
-        return (input_nodes_count != 0 and
-                output_nodes_count == input_nodes_count and
-                nodes_count <= edges_count + 1)
+        return (
+            input_nodes_count != 0
+            and output_nodes_count == input_nodes_count
+            and nodes_count <= edges_count + 1
+        )
 
-    def generate_subgraphs(self, graph: GRAPH_TYPE, output_folder_path: str, length: int = 9,
-                           filters: list[str] = AVAILABLE_GRAPH_FILTERS) -> int:
+    def generate_subgraphs(
+        self,
+        graph: GRAPH_TYPE,
+        output_folder_path: str,
+        length: int = 9,
+        filters: list[str] = AVAILABLE_GRAPH_FILTERS,
+    ) -> int:
         """
         A function that writes all its subgraphs to a file according to a graph
 
@@ -261,9 +278,17 @@ class AST:
             nonlocal subgraph_number
             if current_length == length:
                 subgraph = graph.subgraph(path)
-                if all(getattr(self, filter)(subgraph) for filter in AVAILABLE_GRAPH_FILTERS):
-                    self.data_created.add(output_folder_path + f"/{subgraph_number}.dot")
-                    nx.drawing.nx_pydot.write_dot(subgraph, output_folder_path + f"/subgraph_{subgraph_number}.dot")
+                if all(
+                    getattr(self, filter)(subgraph)
+                    for filter in AVAILABLE_GRAPH_FILTERS
+                ):
+                    self.data_created.add(
+                        output_folder_path + f"/{subgraph_number}.dot"
+                    )
+                    nx.drawing.nx_pydot.write_dot(
+                        subgraph,
+                        output_folder_path + f"/subgraph_{subgraph_number}.dot",
+                    )
                     subgraph_number += 1
                 return
 
@@ -293,7 +318,9 @@ class AST:
             if cur_node_data["type"] in avaliable_roots:
                 subgraph = self.get_subtree(graph, cur_node_id)
                 self.data_created.add(output_folder_path + f"/{subgraph_number}.dot")
-                nx.drawing.nx_pydot.write_dot(subgraph, output_folder_path + f"/subgraph_{subgraph_number}.dot")
+                nx.drawing.nx_pydot.write_dot(
+                    subgraph, output_folder_path + f"/subgraph_{subgraph_number}.dot"
+                )
                 subgraph_number += 1
 
             for child_id in graph.successors(cur_node_id):
@@ -320,7 +347,9 @@ class AST:
             Graph from the file in the desired format
         """
 
-        return nx.drawing.nx_pydot.read_dot(filename)  # Stores the adjacency matrix in the format
+        return nx.drawing.nx_pydot.read_dot(
+            filename
+        )  # Stores the adjacency matrix in the format
 
     def delete_tmp_files(self):
         for file_path in self.data_created:

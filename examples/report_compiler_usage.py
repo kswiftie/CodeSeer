@@ -10,9 +10,5 @@ r = ReportsCompiler(RepoHandler(user_github_token=github_token))
 #     "https://github.com/kswiftie/CodeSeer/tree/main/codeseer/inspections",
 # )
 
-report = r.get_report_from_inspections(
-    "all",
-    "link1",
-    "link2"
-)
+report = r.get_report_from_inspections("all", "link1", "link2")
 print(report)

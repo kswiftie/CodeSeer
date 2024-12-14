@@ -16,7 +16,7 @@ curr = 0
 count1 = 0
 for i in range(n):
     c = t[i]
-    if c == '0':
+    if c == "0":
         if count1:
             e1.append(i - 1)
             if count1 & 1:
@@ -72,7 +72,7 @@ for _ in range(q):
 
         smap = place[start]
         emap = place[end]
-        if t[end] == '1':
+        if t[end] == "1":
             emap -= 1
         if s[smap] == 1:
             smap += 1
@@ -80,13 +80,13 @@ for _ in range(q):
         prep = False
         app = False
 
-        if t[start] == '1':
+        if t[start] == "1":
             last = e1[place[start]]
             last = min(last, end)
             count = last - start + 1
             if count % 2:
                 prep = True
-        if t[end] == '1':
+        if t[end] == "1":
             first = f1[place[end]]
             first = max(first, start)
             count = end - first + 1
@@ -117,8 +117,8 @@ for _ in range(q):
         hashes.append(preHash)
 
     if hashes[0] == hashes[1]:
-        out.append('Yes')
+        out.append("Yes")
     else:
-        out.append('No')
+        out.append("No")
 
-print('\n'.join(out))
+print("\n".join(out))

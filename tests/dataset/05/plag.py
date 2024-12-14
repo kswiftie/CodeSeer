@@ -35,7 +35,9 @@ class MyLinkedList:
         """
         Adds a node with the specified value at the beginning of the linked list.
         """
-        new_node = Node(value, self.head)  # Create a new node pointing to the current head.
+        new_node = Node(
+            value, self.head
+        )  # Create a new node pointing to the current head.
         self.head = new_node  # Update the head to the new node.
         self.size += 1  # Increase the size of the list.
 
@@ -53,7 +55,9 @@ class MyLinkedList:
             while current_node.next_node:
                 current_node = current_node.next_node
 
-            current_node.next_node = Node(value)  # Create a new node and add it as the next node.
+            current_node.next_node = Node(
+                value
+            )  # Create a new node and add it as the next node.
             self.size += 1  # Increase the size of the list.
 
     def addAtIndex(self, index: int, value: int) -> None:

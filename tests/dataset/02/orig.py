@@ -1,7 +1,4 @@
 class MyCircularDeque:
-
-
-
     def __init__(self, k: int):
 
         self.buffer = [0] * k
@@ -11,8 +8,6 @@ class MyCircularDeque:
         self.rear = 0
 
         self.capacity = k
-
-
 
     def insertFront(self, value: int) -> bool:
 
@@ -32,8 +27,6 @@ class MyCircularDeque:
 
         return True
 
-
-
     def insertLast(self, value: int) -> bool:
 
         if self.isFull():
@@ -50,8 +43,6 @@ class MyCircularDeque:
 
         return True
 
-
-
     def deleteFront(self) -> bool:
 
         if self.isEmpty():
@@ -67,8 +58,6 @@ class MyCircularDeque:
             self.front = (self.front + 1) % self.capacity
 
         return True
-
-
 
     def deleteLast(self) -> bool:
 
@@ -88,8 +77,6 @@ class MyCircularDeque:
 
         return True
 
-
-
     def getFront(self) -> int:
 
         if self.isEmpty():
@@ -97,8 +84,6 @@ class MyCircularDeque:
             return -1
 
         return self.buffer[self.front]
-
-
 
     def getRear(self) -> int:
 
@@ -108,15 +93,10 @@ class MyCircularDeque:
 
         return self.buffer[(self.rear - 1 + self.capacity) % self.capacity]
 
-
-
     def isEmpty(self) -> bool:
 
         return self.front == -1
 
-
-
     def isFull(self) -> bool:
 
         return self.front == self.rear
-

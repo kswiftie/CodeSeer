@@ -21,7 +21,7 @@ group_count = 0
 # Iterate over the string to calculate positions and boundaries
 for i in range(n):
     char = t[i]
-    if char == '0':
+    if char == "0":
         if group_count:
             end_pos.append(i - 1)
             if group_count % 2 == 1:
@@ -76,7 +76,7 @@ def compute_substring_hash(start, end):
     start_map = place[start]
     end_map = place[end]
 
-    if t[end] == '1':
+    if t[end] == "1":
         end_map -= 1
     if hash_state[start_map] == 1:
         start_map += 1
@@ -107,13 +107,13 @@ for _ in range(q):
         pre_hash, substring_length = compute_substring_hash(start, end)
 
         prep = app = False
-        if t[start] == '1':
+        if t[start] == "1":
             last_pos = end_pos[place[start]]
             last_pos = min(last_pos, end)
             count = last_pos - start + 1
             if count % 2:
                 prep = True
-        if t[end] == '1':
+        if t[end] == "1":
             first_pos_val = first_pos[place[end]]
             first_pos_val = max(first_pos_val, start)
             count = end - first_pos_val + 1
@@ -133,9 +133,9 @@ for _ in range(q):
 
     # Compare the hashes for both starts
     if hashes[0] == hashes[1]:
-        output.append('Yes')
+        output.append("Yes")
     else:
-        output.append('No')
+        output.append("No")
 
 # Print all the results of the queries
-print('\n'.join(output))
+print("\n".join(output))
