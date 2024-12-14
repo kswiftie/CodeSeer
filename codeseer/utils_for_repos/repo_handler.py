@@ -121,7 +121,7 @@ class RepoHandler:
                 if obj["type"] == "dir":
                     files_list.extend(self.get_list_of_files_in_folder(obj["url"]))
         except Exception as ex:
-            print(ex)
+            print(ex, self.handle_github_url(folder_url), self.headers)
 
         return files_list
 
