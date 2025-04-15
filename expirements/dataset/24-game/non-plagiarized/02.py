@@ -1,12 +1,14 @@
 class Solution:
     def judgePoint24(self, cards: list[int]) -> bool:
         if len(cards) == 2:
-            return abs((cards[0] + cards[1]) - 24) < 0.00001 or \
-                abs((cards[0] * cards[1]) - 24) < 0.00001 or \
-                abs((cards[0] - cards[1]) - 24) < 0.00001 or \
-                abs((cards[1] - cards[0]) - 24) < 0.00001 or \
-                abs((cards[1] and (cards[0] / cards[1])) - 24) < 0.00001 or \
-                abs((cards[0] and (cards[1] / cards[0])) - 24) < 0.00001
+            return (
+                abs((cards[0] + cards[1]) - 24) < 0.00001
+                or abs((cards[0] * cards[1]) - 24) < 0.00001
+                or abs((cards[0] - cards[1]) - 24) < 0.00001
+                or abs((cards[1] - cards[0]) - 24) < 0.00001
+                or abs((cards[1] and (cards[0] / cards[1])) - 24) < 0.00001
+                or abs((cards[0] and (cards[1] / cards[0])) - 24) < 0.00001
+            )
 
         for i in range(len(cards) - 1):
             cards[0], cards[i] = cards[i], cards[0]
@@ -18,7 +20,7 @@ class Solution:
                     cards[0] - cards[1],
                     cards[1] - cards[0],
                     cards[1] and cards[0] / cards[1],
-                    cards[0] and cards[1] / cards[0]
+                    cards[0] and cards[1] / cards[0],
                 ]
                 remaining = cards[2:]
                 for computation in computations:

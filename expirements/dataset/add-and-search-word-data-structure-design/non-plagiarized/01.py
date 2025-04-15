@@ -11,10 +11,10 @@ class WordDictionary:
 
         n = len(word)
 
-        if '.' in word:
+        if "." in word:
 
             for w in self.words[n]:
-                if all(word[i] in (w[i], '.') for i in range(n)):
+                if all(word[i] in (w[i], ".") for i in range(n)):
                     return True
 
             else:

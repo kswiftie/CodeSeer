@@ -5,8 +5,10 @@ class Solution:
         def is_within_1hr(t1, t2):
             h1, m1 = t1.split(":")
             h2, m2 = t2.split(":")
-            if int(h1) + 1 < int(h2): return False
-            if h1 == h2: return True
+            if int(h1) + 1 < int(h2):
+                return False
+            if h1 == h2:
+                return True
             return m1 >= m2
 
         records = collections.defaultdict(list)

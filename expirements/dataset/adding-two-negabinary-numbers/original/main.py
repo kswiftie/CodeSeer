@@ -23,7 +23,9 @@ class Solution:
             carry = carry_1 + carry_2
             ans.append(cur)
             i, j = i - 1, j - 1
-        ans = [1, 1] + ans[::-1] if carry == -1 else ans[::-1]  # Add [1, 1] if there is a carry -1 leftover
+        ans = (
+            [1, 1] + ans[::-1] if carry == -1 else ans[::-1]
+        )  # Add [1, 1] if there is a carry -1 leftover
         for i, v in enumerate(ans):  # Remove leading zero and return
             if v == 1:
                 return ans[i:]

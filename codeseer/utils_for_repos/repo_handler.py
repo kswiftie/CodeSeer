@@ -103,8 +103,9 @@ class RepoHandler:
             print(f"ERROR: {ex}")
             quit()
 
-    def get_list_of_files_in_folder(self, folder_url: str, types_for_selection: list[str] = [".py"]) -> list[
-        dict[str, str]]:
+    def get_list_of_files_in_folder(
+        self, folder_url: str, types_for_selection: list[str] = [".py"]
+    ) -> list[dict[str, str]]:
         """
         The function accepts a link to a folder as input
         and returns a list of all files stored inside this folder.
@@ -132,7 +133,10 @@ class RepoHandler:
                 response_info = [response_info]
             for obj in response_info:
                 if obj["type"] == "file":
-                    if types_for_selection and f".{obj["name"].split('.')[-1]}" in types_for_selection:
+                    if (
+                        types_for_selection
+                        and f".{obj['name'].split('.')[-1]}" in types_for_selection
+                    ):
                         files_list.append(obj)
                 # if obj["type"] == "dir": I guess it is wrong
                 #     files_list.extend(self.get_list_of_files_in_folder(obj["url"]))

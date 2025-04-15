@@ -4,10 +4,14 @@ import math
 class Solution:
     def judgePoint24(self, nums: list[int]) -> bool:
         def generate(a: float, b: float) -> list[float]:
-            return [a * b,
-                    math.inf if b == 0 else a / b,
-                    math.inf if a == 0 else b / a,
-                    a + b, a - b, b - a]
+            return [
+                a * b,
+                math.inf if b == 0 else a / b,
+                math.inf if a == 0 else b / a,
+                a + b,
+                a - b,
+                b - a,
+            ]
 
         def dfs(nums: list[float]) -> bool:
             if len(nums) == 1:

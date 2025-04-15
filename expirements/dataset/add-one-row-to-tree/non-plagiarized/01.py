@@ -9,9 +9,12 @@ class TreeNode:
 
 
 class Solution:
-    def addOneRow(self, root: Optional[TreeNode], val: int, depth: int) -> Optional[TreeNode]:
+    def addOneRow(
+        self, root: Optional[TreeNode], val: int, depth: int
+    ) -> Optional[TreeNode]:
         def dfs(root, val, depth):
-            if root == None: return
+            if root == None:
+                return
             if depth > 2:
                 dfs(root.left, val, depth - 1)
                 dfs(root.right, val, depth - 1)

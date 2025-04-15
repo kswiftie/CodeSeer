@@ -3,9 +3,12 @@ class Solution:
         cache = {}
 
         def helper(screen, clipboard):
-            if (screen, clipboard) in cache: return cache[(screen, clipboard)]
-            if screen == n: return 0
-            if screen > n: return float("Inf")
+            if (screen, clipboard) in cache:
+                return cache[(screen, clipboard)]
+            if screen == n:
+                return 0
+            if screen > n:
+                return float("Inf")
 
             copy_paste = helper(screen + screen, screen) + 2
             paste = float("Inf")

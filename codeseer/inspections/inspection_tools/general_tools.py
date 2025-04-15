@@ -21,7 +21,7 @@ def remove_comments(code: str) -> str:
         """
         if isinstance(node, ast.Expr):
             if isinstance(node.value, ast.Constant) and isinstance(
-                    node.value.value, str
+                node.value.value, str
             ):
                 return None
 

@@ -1,8 +1,9 @@
 from datasets import load_dataset
 from codeseer import RepoHandler, ReportCompiler
 
-ds = load_dataset("HiggsBoson/CodeSemSim", split="train[:200]",
-                  cache_dir="./.cache")  # U will have to wait till it loads
+ds = load_dataset(
+    "HiggsBoson/CodeSemSim", split="train[:200]", cache_dir="./.cache"
+)  # U will have to wait till it loads
 
 code1, code2, code3 = "", "", ""
 

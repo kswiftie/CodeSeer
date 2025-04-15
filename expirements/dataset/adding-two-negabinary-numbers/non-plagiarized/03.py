@@ -18,7 +18,7 @@ class Solution:
             b = -2
             for i, j in enumerate(f):
                 if j == "1":
-                    d += b ** i
+                    d += b**i
             return d
 
         m = btd(k) + btd(k1)

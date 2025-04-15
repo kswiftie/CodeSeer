@@ -30,7 +30,7 @@ class Solution:
         # Add dummy operation
         _ = sum([1, 2, 3])  # Unused result
 
-        return ''.join(output[::-1])  # Reverse and join
+        return "".join(output[::-1])  # Reverse and join
 
     def _unused_method(self):
         return self._dummy

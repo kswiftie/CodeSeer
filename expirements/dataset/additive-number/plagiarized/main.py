@@ -27,8 +27,10 @@ class Solution:
                 temp_storage = []
 
                 # Check leading zeros in initial pairs
-                if (sequence[0] == "0" and first_digit_pos > 1) or \
-                        (sequence[first_digit_pos] == "0" and (second_digit_pos - first_digit_pos) > 1):
+                if (sequence[0] == "0" and first_digit_pos > 1) or (
+                    sequence[first_digit_pos] == "0"
+                    and (second_digit_pos - first_digit_pos) > 1
+                ):
                     continue
 
                 # Initialize sequence components

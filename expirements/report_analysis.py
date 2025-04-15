@@ -5,9 +5,9 @@ import re
 
 def parse_similarity_data(html_content):
     pattern = re.compile(
-        r'<p>(?:\(\w+\)\s+)?'  # Необязательный префикс (nn)
+        r"<p>(?:\(\w+\)\s+)?"  # Необязательный префикс (nn)
         r'Similarity of <span class="grey">([^<]+)</span> to <span class="grey">([^<]+)</span> is <span class="[^"]+">([\d.]+)%</span>',
-        re.MULTILINE
+        re.MULTILINE,
     )
 
     similarity_dict = {}
@@ -23,14 +23,14 @@ def parse_similarity_data(html_content):
 
 def analyze_similarity_stats(data, stats1=None):
     stats = {
-        'original_plagiarized': {
-            'class1': {'<=50': 0, '<=80': 0, '80<': 0, 'total': 0},
-            'class2': {'<=50': 0, '<=80': 0, '80<': 0, 'total': 0},
+        "original_plagiarized": {
+            "class1": {"<=50": 0, "<=80": 0, "80<": 0, "total": 0},
+            "class2": {"<=50": 0, "<=80": 0, "80<": 0, "total": 0},
         },
-        'original_nonplagiarized': {
-            'class1': {'<=50': 0, '<=80': 0, '80<': 0, 'total': 0},
-            'class2': {'<=50': 0, '<=80': 0, '80<': 0, 'total': 0},
-        }
+        "original_nonplagiarized": {
+            "class1": {"<=50": 0, "<=80": 0, "80<": 0, "total": 0},
+            "class2": {"<=50": 0, "<=80": 0, "80<": 0, "total": 0},
+        },
     }
 
     if stats1:
@@ -45,23 +45,29 @@ def analyze_similarity_stats(data, stats1=None):
         for key in data:
             val = data[key][class_idx]
 
-            if {'original', 'plagiarized'} == set(key):
-                stats['original_plagiarized'][f'class{class_idx + 1}']['total'] += 1
+            if {"original", "plagiarized"} == set(key):
+                stats["original_plagiarized"][f"class{class_idx + 1}"]["total"] += 1
                 if val <= 50:
-                    stats['original_plagiarized'][f'class{class_idx + 1}']['<=50'] += 1
+                    stats["original_plagiarized"][f"class{class_idx + 1}"]["<=50"] += 1
                 if 50 < val <= 80:
-                    stats['original_plagiarized'][f'class{class_idx + 1}']['<=80'] += 1
+                    stats["original_plagiarized"][f"class{class_idx + 1}"]["<=80"] += 1
                 if 80 < val:
-                    stats['original_plagiarized'][f'class{class_idx + 1}']['80<'] += 1
+                    stats["original_plagiarized"][f"class{class_idx + 1}"]["80<"] += 1
 
-            elif 'original' in key and any('non-plagiarized' in k for k in key):
-                stats['original_nonplagiarized'][f'class{class_idx + 1}']['total'] += 1
+            elif "original" in key and any("non-plagiarized" in k for k in key):
+                stats["original_nonplagiarized"][f"class{class_idx + 1}"]["total"] += 1
                 if val <= 50:
-                    stats['original_nonplagiarized'][f'class{class_idx + 1}']['<=50'] += 1
+                    stats["original_nonplagiarized"][f"class{class_idx + 1}"][
+                        "<=50"
+                    ] += 1
                 if 50 < val <= 80:
-                    stats['original_nonplagiarized'][f'class{class_idx + 1}']['<=80'] += 1
+                    stats["original_nonplagiarized"][f"class{class_idx + 1}"][
+                        "<=80"
+                    ] += 1
                 if 80 < val:
-                    stats['original_nonplagiarized'][f'class{class_idx + 1}']['80<'] += 1
+                    stats["original_nonplagiarized"][f"class{class_idx + 1}"][
+                        "80<"
+                    ] += 1
 
     return stats
 
@@ -86,14 +92,14 @@ def generate_html(stats, filename, info, formula):
     </head>
     <body>
         <h1>Анализ схожести текстов</h1>
-        
+
         <h1>Description</h1>
         <p>{info}</p>
-        
+
         <h2>Formula</h2>
         <pre style="background-color: #f4f4f4; border: 1px solid #ccc; padding: 10px; border-radius: 5px;"><code>{code}</code>
         </pre>
-        
+
         <h2>Original vs Plagiarized</h2>
         {op_tables}
 
@@ -105,9 +111,10 @@ def generate_html(stats, filename, info, formula):
 
     op_tables = []
     for i in range(2):
-        class_data = stats['original_plagiarized'][f'class{i + 1}']
-        total = class_data['total']
-        op_tables.append(f"""
+        class_data = stats["original_plagiarized"][f"class{i + 1}"]
+        total = class_data["total"]
+        op_tables.append(
+            f"""
         <div class="class{i + 1}">
             <h3>Класс {i + 1}</h3>
             <table>
@@ -133,13 +140,15 @@ def generate_html(stats, filename, info, formula):
                 </tr>
             </table>
         </div>
-        """)
+        """
+        )
 
     on_tables = []
     for i in range(2):
-        class_data = stats['original_nonplagiarized'][f'class{i + 1}']
-        total = class_data['total']
-        on_tables.append(f"""
+        class_data = stats["original_nonplagiarized"][f"class{i + 1}"]
+        total = class_data["total"]
+        on_tables.append(
+            f"""
         <div class="class{i + 1}">
             <h3>Класс {i + 1}</h3>
             <table>
@@ -165,16 +174,17 @@ def generate_html(stats, filename, info, formula):
                 </tr>
             </table>
         </div>
-        """)
+        """
+        )
 
     html_content = html_template.format(
-        op_tables='\n'.join(op_tables),
-        on_tables='\n'.join(on_tables),
+        op_tables="\n".join(op_tables),
+        on_tables="\n".join(on_tables),
         info=info,
         code=formula,
     )
 
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(filename, "w", encoding="utf-8") as f:
         f.write(html_content)
 
 
@@ -182,7 +192,7 @@ def get_analysis(dirpath, analysis_name, info, formula):
     inputs = {}
     for report_name in os.listdir(dirpath):
         full_path = dirpath + "/" + report_name
-        data = open(full_path, 'r').read()
+        data = open(full_path, "r").read()
         if inputs:
             inputs = analyze_similarity_stats(parse_similarity_data(data), inputs)
         else:

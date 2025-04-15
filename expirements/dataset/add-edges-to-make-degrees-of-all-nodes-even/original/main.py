@@ -15,7 +15,5 @@ class Solution:
 
         if len(odd) == 4:
             a, b, c, d = odd
-            return f(a, b) and f(c, d) or \
-                f(a, c) and f(b, d) or \
-                f(a, d) and f(c, b)
+            return f(a, b) and f(c, d) or f(a, c) and f(b, d) or f(a, d) and f(c, b)
         return len(odd) == 0

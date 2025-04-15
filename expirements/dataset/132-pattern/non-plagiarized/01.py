@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class Solution:
     def find132pattern(self, nums: list[int]) -> bool:
         length = len(nums)
@@ -12,7 +13,7 @@ class Solution:
         decreasing_stack = deque()
 
         # Maximum value of the third element in the 132 pattern
-        max_third_element = float('-inf')
+        max_third_element = float("-inf")
 
         # Traverse the array from right to left
         for i in range(length - 1, -1, -1):

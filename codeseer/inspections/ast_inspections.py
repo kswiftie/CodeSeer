@@ -30,7 +30,7 @@ class ASTInspections:
 
         Args:
             file_inputs: list[tuple[str, str]]
-                A list of pairs of links/codes and their names. 
+                A list of pairs of links/codes and their names.
 
         Returns:
             result: dict[str, float]
@@ -61,8 +61,8 @@ class ASTInspections:
                     )
 
                 result[f"{files_names[i]}-{files_names[j]}"] = (
-                        count_of_sim_hashes
-                        / min(len(files_hashes[i]), len(files_hashes[j]))
+                    count_of_sim_hashes
+                    / min(len(files_hashes[i]), len(files_hashes[j]))
                 )
 
         return result
@@ -96,7 +96,7 @@ class ASTInspections:
         for folder_url in folder_urls:
             file_links.append([])
             for file in self.repo_handler.get_list_of_files_in_folder(
-                    folder_url, types_for_selection=[".py"]
+                folder_url, types_for_selection=[".py"]
             ):
                 link = file["url"]
                 file_links[-1].append((link, get_the_name_of_link(link)))
@@ -109,20 +109,23 @@ class ASTInspections:
                 compared_folders = f"{folder_names[i]} to {folder_names[q]}"
                 for j in range(count_of_files_from_cur_folder):
                     # results for cur file from cur folder
-                    result = {**result, **self.compare_files(
-                        file_links[i][j], *file_links[q]
-                    )}  # add to the result comparsions for cur file
+                    result = {
+                        **result,
+                        **self.compare_files(file_links[i][j], *file_links[q]),
+                    }  # add to the result comparsions for cur file
 
         return result
 
-    def compare_files_with_folders(self, file_inputs: list[str], folder_inputs: list[str]) -> dict[str, float]:
+    def compare_files_with_folders(
+        self, file_inputs: list[str], folder_inputs: list[str]
+    ) -> dict[str, float]:
         """
         This function compares inputted files with all files from inputted folders.
 
         Args:
             file_inputs: list[str]
                 A list of links from the github pointing to the file
-    
+
             folder_inputs: list[str]
                 A list of links from the github pointing to the folder
 
@@ -131,7 +134,7 @@ class ASTInspections:
                 A dictionary in which the key is
                 a string indicating the files and folders being compared,
                 and the value is the result of comparing files with folders.
-    
+
                 The results of comparing each file with each
                 of the different folders will be written here.
         """
@@ -146,23 +149,28 @@ class ASTInspections:
                 compared_file_with_folder = f"{file_names[i]} to {folder_names[j]}"
                 count_of_files_in_cur_folder = 0
                 for file in self.repo_handler.get_list_of_files_in_folder(
-                        folder_urls[j], types_for_selection=[".py"]
+                    folder_urls[j], types_for_selection=[".py"]
                 ):
                     count_of_files_in_cur_folder += 1
                     link = file["url"]
 
-                    result = {**result, **self.compare_files(
-                        (file_urls[i], file_names[i]),
-                        (link, get_the_name_of_link(link)),
-                    )}
+                    result = {
+                        **result,
+                        **self.compare_files(
+                            (file_urls[i], file_names[i]),
+                            (link, get_the_name_of_link(link)),
+                        ),
+                    }
 
         return result
 
 
 class ASTResultsHandler(ASTInspections):
-    _AVAILABLE_AST_INSPECTIONS_LIST = ["compare_files",
-                                       "compare_folders",
-                                       "compare_files_with_folders_standart",]
+    _AVAILABLE_AST_INSPECTIONS_LIST = [
+        "compare_files",
+        "compare_folders",
+        "compare_files_with_folders_standart",
+    ]
 
     def __init__(self, repo_handler):
         super().__init__(repo_handler)
@@ -185,7 +193,7 @@ class ASTResultsHandler(ASTInspections):
         """
         A function to take processed results of inspection
         """
-        
+
         func_result = super().compare_folders(*file_inputs)
 
         part_to_report = """check using hash of ASTs (comparing of folders)\n"""
@@ -194,16 +202,17 @@ class ASTResultsHandler(ASTInspections):
 
         return part_to_report
 
-
     @inputs_preprocessing2
     def handle_compare_files_with_folders_standart(self, *file_inputs) -> str:
         """
         A function to take processed results of inspection
         """
-        
+
         func_result = super().compare_files_with_folders(*file_inputs)
 
-        part_to_report = """check using hash of ASTs (comparing of files with folders)\n"""
+        part_to_report = (
+            """check using hash of ASTs (comparing of files with folders)\n"""
+        )
         for compared_names, res_coeff in func_result.items():
             part_to_report += f"""<p>Similarity of {compared_names} is {get_the_coeff_part(res_coeff * 100)}</p>"""
 

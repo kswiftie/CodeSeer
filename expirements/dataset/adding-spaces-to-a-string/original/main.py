@@ -1,7 +1,7 @@
 class Solution:
     def addSpaces(self, s: str, spaces: list[int]) -> str:
         m, n = len(spaces), len(s)
-        t = [' '] * (m + n)
+        t = [" "] * (m + n)
         j = 0
         for i, c in enumerate(s):
             if j < m and i == spaces[j]:

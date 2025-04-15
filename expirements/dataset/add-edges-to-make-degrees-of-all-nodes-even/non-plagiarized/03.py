@@ -30,9 +30,11 @@ class Solution:
 
         if len(oddDegrees) == 4:
             a, b, c, d = oddDegrees
-            if ((b not in E[a] and d not in E[c])
-                    or (c not in E[a] and d not in E[b])
-                    or (d not in E[a] and c not in E[b])):
+            if (
+                (b not in E[a] and d not in E[c])
+                or (c not in E[a] and d not in E[b])
+                or (d not in E[a] and c not in E[b])
+            ):
                 return True
             return False
 

@@ -17,14 +17,18 @@ class Solution:
 
             # Use two pointers to find the triplets
             while left < right:
-                current_sum = nums[index] + nums[left] + nums[right]  # Calculate the sum
+                current_sum = (
+                    nums[index] + nums[left] + nums[right]
+                )  # Calculate the sum
 
                 if current_sum > 0:  # If the sum is greater than zero
                     right -= 1  # Move the right pointer left
                 elif current_sum < 0:  # If the sum is less than zero
                     left += 1  # Move the left pointer right
                 else:  # If the sum is zero
-                    result.append([nums[index], nums[left], nums[right]])  # Add the triplet to the result
+                    result.append(
+                        [nums[index], nums[left], nums[right]]
+                    )  # Add the triplet to the result
                     left += 1  # Move the left pointer right
 
                     # Skip duplicates for the left pointer

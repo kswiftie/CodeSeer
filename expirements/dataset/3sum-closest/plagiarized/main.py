@@ -40,7 +40,10 @@ class Solution:
                 continue
 
             # Recursively find the closest (k-1) sum
-            current_sum = self.KSumClosest(arr[idx + 1:], k - 1, target - current_num) + current_num
+            current_sum = (
+                self.KSumClosest(arr[idx + 1 :], k - 1, target - current_num)
+                + current_num
+            )
 
             # Update nearest sum if a closer candidate is found
             if abs(target - current_sum) < abs(target - nearest_sum):

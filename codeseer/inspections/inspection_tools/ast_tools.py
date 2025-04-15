@@ -98,9 +98,7 @@ def generate_subtrees_hashes(tree: nx.DiGraph) -> list[str]:
         cur_node_data = tree.nodes[cur_node_id]
 
         if cur_node_data["label"] in avaliable_roots:
-            res.append(
-                hash_tree(get_subtree(tree, cur_node_id), cur_node_id)
-            )
+            res.append(hash_tree(get_subtree(tree, cur_node_id), cur_node_id))
 
         for child_id in tree.successors(cur_node_id):
             dfs(child_id)

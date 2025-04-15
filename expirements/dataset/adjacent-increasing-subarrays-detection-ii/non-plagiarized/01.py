@@ -6,7 +6,8 @@ class Solution:
         while beg < n:
             prev, ptr = curr, beg + 1
 
-            while ptr <= n and nums[ptr - 1] < nums[ptr]: ptr += 1
+            while ptr <= n and nums[ptr - 1] < nums[ptr]:
+                ptr += 1
 
             curr, beg = ptr - beg, ptr
             k = min(prev, curr)

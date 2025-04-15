@@ -26,5 +26,5 @@ class Solution:
 
         res = []
         for i in ans:
-            res += list(i),
+            res += (list(i),)
         return res

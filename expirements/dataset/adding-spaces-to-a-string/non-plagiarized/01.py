@@ -1,8 +1,8 @@
 class Solution:
     def addSpaces(self, s, spaces):
         arr = []
-        arr.append(s[:spaces[0]])
+        arr.append(s[: spaces[0]])
         for i in range(1, len(spaces)):
-            arr.append(s[spaces[i - 1]:spaces[i]])
-        arr.append(s[spaces[-1]:])
-        return ' '.join(arr)
+            arr.append(s[spaces[i - 1] : spaces[i]])
+        arr.append(s[spaces[-1] :])
+        return " ".join(arr)

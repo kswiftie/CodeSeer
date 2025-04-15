@@ -1,5 +1,4 @@
 import torch
-
 from .inspection_tools.unixcoder import UniXcoder
 from collections import Counter
 from nltk.metrics.distance import edit_distance
@@ -87,9 +86,7 @@ class TokenizationInspections:
 
         return result
 
-    def compare_folders_standart(
-            self, *folder_inputs
-    ) -> dict[str, float]:
+    def compare_folders_standart(self, *folder_inputs) -> dict[str, float]:
         """
         A function for comparing the contents between
         all files in folders using tokenization.
@@ -120,7 +117,7 @@ class TokenizationInspections:
         for folder_url in folder_urls:
             file_links.append([])
             for file in self.repo_handler.get_list_of_files_in_folder(
-                    folder_url, types_for_selection=[".py"]
+                folder_url, types_for_selection=[".py"]
             ):
                 link = file["url"]
                 file_links[-1].append((link, get_the_name_of_link(link)))
@@ -132,9 +129,10 @@ class TokenizationInspections:
             for q in range(i + 1, count_of_folders):
                 for j in range(count_of_files_from_cur_folder):
                     # add results for cur file from cur folder
-                    result = {**result, **self.compare_files_standart(
-                        file_links[i][j], *file_links[q]
-                    )}
+                    result = {
+                        **result,
+                        **self.compare_files_standart(file_links[i][j], *file_links[q]),
+                    }
                     # we can just take a max from each
                     # step bc file should not look similar
                     # more than with 1 other file ig
@@ -172,9 +170,13 @@ class TokenizationInspections:
 
         for i in range(files_count):
             for j in range(i + 1, files_count):
-                emb1 = get_normalized_embedding(files_content[i], self.model, self.device)
-                emb2 = get_normalized_embedding(files_content[j], self.model, self.device)
-                if False:  # In testing
+                emb1 = get_normalized_embedding(
+                    files_content[i], self.model, self.device
+                )
+                emb2 = get_normalized_embedding(
+                    files_content[j], self.model, self.device
+                )
+                if True:  # In testing
                     result[f"{file_names[i]} to {file_names[j]}"] = (
                         cosine_between_tensors(emb1, emb2)
                     )
@@ -185,9 +187,7 @@ class TokenizationInspections:
 
         return result
 
-    def compare_folders_nn(
-            self, *folder_inputs
-    ) -> dict[str, float]:
+    def compare_folders_nn(self, *folder_inputs) -> dict[str, float]:
         """
         A function for comparing the contents between all files in folders
         An important feature is the use of a neural network to
@@ -216,7 +216,7 @@ class TokenizationInspections:
         for folder_url in folder_urls:
             file_links.append([])
             for file in self.repo_handler.get_list_of_files_in_folder(
-                    folder_url, types_for_selection=[".py"]
+                folder_url, types_for_selection=[".py"]
             ):
                 link = file["url"]
                 file_links[-1].append((link, get_the_name_of_link(link)))
@@ -228,14 +228,15 @@ class TokenizationInspections:
             for q in range(i + 1, folders_count):
                 for j in range(count_of_files_from_cur_folder):
                     # add results for cur file from cur folder
-                    result = {**result, **self.compare_files_nn(
-                        file_links[i][j], *file_links[q]
-                    )}
+                    result = {
+                        **result,
+                        **self.compare_files_nn(file_links[i][j], *file_links[q]),
+                    }
 
         return result
 
     def compare_files_with_folders_standart(
-            self, file_inputs: list[str], folder_inputs: list[str]
+        self, file_inputs: list[str], folder_inputs: list[str]
     ) -> dict[str, float]:
         """
         This function compares files with all files from folders.
@@ -266,20 +267,23 @@ class TokenizationInspections:
             for j in range(len(folder_urls)):  # for each folder
                 count_of_files_in_cur_folder = 0
                 for file in self.repo_handler.get_list_of_files_in_folder(
-                        folder_urls[j], types_for_selection=[".py"]
+                    folder_urls[j], types_for_selection=[".py"]
                 ):
                     count_of_files_in_cur_folder += 1
                     link = file["url"]
 
-                    result = {**result, **self.compare_files_standart(
-                        (file_urls[i], file_names[i]),
-                        (link, get_the_name_of_link(link)),
-                    )}
+                    result = {
+                        **result,
+                        **self.compare_files_standart(
+                            (file_urls[i], file_names[i]),
+                            (link, get_the_name_of_link(link)),
+                        ),
+                    }
 
         return result
 
     def compare_files_with_folders_nn(
-            self, file_inputs: list[str], folder_inputs: list[str]
+        self, file_inputs: list[str], folder_inputs: list[str]
     ) -> dict[str, float]:
         """
         This function compares files with all files from folders.
@@ -311,14 +315,17 @@ class TokenizationInspections:
             for j in range(len(folder_urls)):  # for each folder
                 count_of_files_in_cur_folder = 0
                 for file in self.repo_handler.get_list_of_files_in_folder(
-                        folder_urls[j], types_for_selection=[".py"]
+                    folder_urls[j], types_for_selection=[".py"]
                 ):
                     count_of_files_in_cur_folder += 1
                     link = file["url"]
-                    result = {**result, **self.compare_files_nn(
-                        (file_urls[i], file_names[i]),
-                        (link, get_the_name_of_link(link)),
-                    )}
+                    result = {
+                        **result,
+                        **self.compare_files_nn(
+                            (file_urls[i], file_names[i]),
+                            (link, get_the_name_of_link(link)),
+                        ),
+                    }
 
         return result
 
@@ -351,7 +358,9 @@ class TokenizationResultsHandler(TokenizationInspections):
     def handle_compare_folders_standart(self, *folder_inputs) -> str:
         func_result = super().compare_folders_standart(*folder_inputs)
 
-        part_to_report = """check using tokens and levenstein (comparing of folders)\n"""
+        part_to_report = (
+            """check using tokens and levenstein (comparing of folders)\n"""
+        )
         for compared_names, res_coeff in func_result.items():
             part_to_report += f"""<p>Similarity of {compared_names} is {get_the_coeff_part(res_coeff * 100)}</p>"""
 
@@ -379,11 +388,15 @@ class TokenizationResultsHandler(TokenizationInspections):
 
     @inputs_preprocessing2
     def handle_compare_files_with_folders_standart(
-            self, file_inputs: list[str], folder_inputs: list[str]
+        self, file_inputs: list[str], folder_inputs: list[str]
     ) -> str:
-        func_result = super().compare_files_with_folders_standart(file_inputs, folder_inputs)
+        func_result = super().compare_files_with_folders_standart(
+            file_inputs, folder_inputs
+        )
 
-        part_to_report = """check using tokens and levestein (comparing of files with folders)\n"""
+        part_to_report = (
+            """check using tokens and levestein (comparing of files with folders)\n"""
+        )
         for compared_names, res_coeff in func_result.items():
             part_to_report += f"""<p>Similarity of {compared_names} is {get_the_coeff_part(res_coeff * 100)}</p>"""
 
@@ -391,7 +404,7 @@ class TokenizationResultsHandler(TokenizationInspections):
 
     @inputs_preprocessing2
     def handle_compare_files_with_folders_nn(
-            self, file_inputs: list[str], folder_inputs: list[str]
+        self, file_inputs: list[str], folder_inputs: list[str]
     ) -> str:
         func_result = super().compare_files_with_folders_nn(file_inputs, folder_inputs)
 

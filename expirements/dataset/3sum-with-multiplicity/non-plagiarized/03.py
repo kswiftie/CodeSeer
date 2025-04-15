@@ -15,14 +15,16 @@ class Solution:
                 if num1 * 3 == target:
                     res += math.comb(counts[num1], 3)
                 else:
-                    res += ((counts[num1] * (counts[num1] - 1)) // 2) * counts[target - num1 * 2]
+                    res += ((counts[num1] * (counts[num1] - 1)) // 2) * counts[
+                        target - num1 * 2
+                    ]
 
             while k < j:
                 num2, num3 = sorted_arr[k], sorted_arr[j]
                 total = num1 + num2 + num3
 
                 if total == target:
-                    res += (counts[num1] * counts[num2] * counts[num3])
+                    res += counts[num1] * counts[num2] * counts[num3]
                     k += 1
                     j -= 1
                 elif total < target:
@@ -30,4 +32,4 @@ class Solution:
                 else:
                     j -= 1
 
-        return res % (10 ** 9 + 7)
+        return res % (10**9 + 7)

@@ -10,7 +10,7 @@ class Solution:
         counts = Counter(arr)
 
         # total method count, and modulo constant
-        result, constant = 0, (10 ** 9 + 7)
+        result, constant = 0, (10**9 + 7)
 
         # find the method count where i + j + k = target
         # all numbers are bounded in interval [0, 100]

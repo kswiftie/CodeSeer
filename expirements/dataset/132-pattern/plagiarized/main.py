@@ -7,7 +7,7 @@ class Solution:
 
         # Инициализация стека и переменной для отслеживания второго числа
         helper_stack = []
-        second_candidate = float('-inf')
+        second_candidate = float("-inf")
 
         # Обратный перебор элементов массива с использованием while
         index = len(arr) - 1

@@ -27,12 +27,20 @@ class Solution:
         while queue:
             current_row, current_col = queue.popleft()  # Get the front of the queue
             for delta_row, delta_col in move_directions:
-                new_row, new_col = current_row + delta_row, current_col + delta_col  # Calculate new position
+                new_row, new_col = (
+                    current_row + delta_row,
+                    current_col + delta_col,
+                )  # Calculate new position
                 # Check if the new position is valid and update if necessary
-                if 0 <= new_row < rows and 0 <= new_col < cols and matrix[new_row][new_col] > matrix[current_row][
-                    current_col] + 1:
+                if (
+                    0 <= new_row < rows
+                    and 0 <= new_col < cols
+                    and matrix[new_row][new_col] > matrix[current_row][current_col] + 1
+                ):
                     queue.append((new_row, new_col))  # Add new position to the queue
-                    matrix[new_row][new_col] = matrix[current_row][current_col] + 1  # Update distance
+                    matrix[new_row][new_col] = (
+                        matrix[current_row][current_col] + 1
+                    )  # Update distance
 
         # Return the updated matrix
         return matrix  # Final result

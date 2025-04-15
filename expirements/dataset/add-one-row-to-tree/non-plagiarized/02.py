@@ -6,5 +6,5 @@ class Solution:
             return res
         if root:
             root.left = self.addOneRow(root.left, v, d - 1)
-            root.right = self.addOneRow(root.right, v, d - 1, 'right')
+            root.right = self.addOneRow(root.right, v, d - 1, "right")
         return root

@@ -5,8 +5,8 @@ class Solution:
 
         for i, char in enumerate(s):
             if it < len(spaces) and i == spaces[it]:  # Insert space if index matches
-                result.append(' ')
+                result.append(" ")
                 it += 1
             result.append(char)  # Append character to result
 
-        return ''.join(result)  # Combine list into final string
+        return "".join(result)  # Combine list into final string

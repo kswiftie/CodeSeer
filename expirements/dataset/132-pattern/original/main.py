@@ -1,6 +1,6 @@
 class Solution:
     def find132pattern(self, nums: list[int]) -> bool:
-        stack, third = [], float('-inf')
+        stack, third = [], float("-inf")
 
         for num in reversed(nums):
             if num < third:

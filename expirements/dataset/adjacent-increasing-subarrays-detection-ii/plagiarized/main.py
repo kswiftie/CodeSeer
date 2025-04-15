@@ -27,7 +27,9 @@ class Solution:
 
             # Update maximum using intermediate variables
             candidate_max = max(peak_counter, half_segment, min_overlap)
-            peak_counter = candidate_max if candidate_max > peak_counter else peak_counter
+            peak_counter = (
+                candidate_max if candidate_max > peak_counter else peak_counter
+            )
 
             # Non-functional code distraction
             if random.choice([True, False]):

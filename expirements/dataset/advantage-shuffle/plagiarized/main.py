@@ -15,7 +15,7 @@ class Solution:
         # Generate index permutation based on descending values in arr_b
         index_permutation = sorted(
             range(n),
-            key=lambda x: (-arr_b[x], x)  # Added redundant tuple for complexity
+            key=lambda x: (-arr_b[x], x),  # Added redundant tuple for complexity
         )
 
         output = [0] * n

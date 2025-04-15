@@ -1,5 +1,7 @@
 class Solution:
-    def fourSumCount(self, A: list[int], B: list[int], C: list[int], D: list[int]) -> int:
+    def fourSumCount(
+        self, A: list[int], B: list[int], C: list[int], D: list[int]
+    ) -> int:
         h = dict()
 
         for a in A:

@@ -2,6 +2,8 @@ import tokenize, torch, math
 from collections import Counter
 from io import BytesIO
 
+from pandas.core.window.doc import template_returns
+
 
 def get_the_coeff_part(coeff: float | int) -> str:
     """
@@ -47,7 +49,7 @@ def tokenize_code(code: str) -> tuple[set[str], Counter[str]]:
     return tokens, token_count
 
 
-def cosine_between_tensors(tensor1: torch.tensor, tensor2: torch.tensor) -> float:
+def cosine_between_tensors(tensor1: torch.Tensor, tensor2: torch.Tensor) -> float:
     """
     Represents two tensors as a one-dimensional vector,
     rewriting their values in order in a row,
@@ -76,11 +78,11 @@ def cosine_between_tensors(tensor1: torch.tensor, tensor2: torch.tensor) -> floa
     # f = lambda x: x * math.log(x + 1) / math.log(2)  # ITS NOT SO BAD
     # f = lambda x: 1 - (1 - x) ** 0.5  # THATS GOOD
     # f = lambda x: (math.cosh(x) - 1) / (math.cosh(1) - 1)
-    return similarity
+    return similarity / (len(tensor1) ** 0.5)
 
 
 def cos_similarity_counter_modififed(
-        counter1: Counter[str], counter2: Counter[str]
+    counter1: Counter[str], counter2: Counter[str]
 ) -> float:
     """
     Cosine between two vectors of counter.
@@ -105,8 +107,8 @@ def cos_similarity_counter_modififed(
     dot_product = sum(v1 * v2 for v1, v2 in zip(vec1, vec2))
 
     # Calculating their norms
-    norm1 = sum(v ** 2 for v in vec1) ** 0.5
-    norm2 = sum(v ** 2 for v in vec2) ** 0.5
+    norm1 = sum(v**2 for v in vec1) ** 0.5
+    norm2 = sum(v**2 for v in vec2) ** 0.5
 
     # Calculating the angle between the vectors
     # 2 * norm1 * norm2 because coordinates of the vectors are always non-negative
@@ -114,7 +116,7 @@ def cos_similarity_counter_modififed(
     return dot_product / (2 * norm1 * norm2) if norm1 and norm2 else 0
 
 
-def euclidean_similarity(t1: torch.tensor, t2: torch.tensor) -> float:  # In testing
+def euclidean_similarity(t1: torch.Tensor, t2: torch.Tensor) -> float:  # In testing
     """
     The Euclidean distance between L2-normalized vectors.
 
@@ -127,12 +129,12 @@ def euclidean_similarity(t1: torch.tensor, t2: torch.tensor) -> float:  # In tes
     return similarity
 
 
-def get_normalized_embedding(code: str, model, device) -> torch.tensor:
+def get_normalized_embedding(code: str, model, device) -> torch.Tensor:
     """
     Builds embedding based on python code using UnixCoder.
     The result is an L2-normalized vector.
     """
     tokens_ids = model.tokenize([code], mode="<encoder-only>")
-    source_ids = torch.tensor(tokens_ids).to(device)
+    source_ids = torch.Tensor(tokens_ids).to(device)
     _, embedding = model(source_ids)
     return torch.nn.functional.normalize(embedding.flatten(), p=2, dim=0)

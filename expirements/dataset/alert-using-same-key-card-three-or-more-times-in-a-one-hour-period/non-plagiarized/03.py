@@ -3,7 +3,7 @@ class Solution:
         mapp = {}
         for i in range(len(keyName)):
             name = keyName[i]
-            if (name not in mapp):
+            if name not in mapp:
                 mapp[name] = [keyTime[i]]
             else:
                 mapp[name].append(keyTime[i])
@@ -14,17 +14,17 @@ class Solution:
                 time = arr[i]
                 t2 = arr[i + 1]
                 t3 = arr[i + 2]
-                if (time[0:2] == "23"):
+                if time[0:2] == "23":
                     endTime = "24:00"
-                    if (t2 <= endTime and t3 <= endTime and t2 > time and t3 > time):
+                    if t2 <= endTime and t3 <= endTime and t2 > time and t3 > time:
                         res.append(name)
                         break
                 else:
                     start = int(time[0:2])
                     endTime = str(start + 1) + time[2:]
-                    if (start < 9):
+                    if start < 9:
                         endTime = "0" + endTime
-                    if (t2 <= endTime and t3 <= endTime):
+                    if t2 <= endTime and t3 <= endTime:
                         res.append(name)
                         break
 

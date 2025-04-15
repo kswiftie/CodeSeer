@@ -5,7 +5,7 @@ class WordDictionary:
 
     def addWord(self, word: str) -> None:
         node = self.trie
-        for ch in word + '🌻':
+        for ch in word + "🌻":
             if ch not in node:
                 node[ch] = dict()
 
@@ -13,10 +13,10 @@ class WordDictionary:
 
     def search(self, word: str) -> bool:
         nodes = [self.trie]
-        for ch in word + '🌻':
+        for ch in word + "🌻":
             newNodes = []
             for node in nodes:
-                if ch == '.':
+                if ch == ".":
                     newNodes += [v for v in node.values()]
                 elif ch in node:
                     newNodes.append(node[ch])

@@ -7,5 +7,7 @@ class Solution:
                 cur_increase += 1
             else:
                 prev_increase, cur_increase = cur_increase, 1
-            longest_k = max(longest_k, cur_increase // 2, min(prev_increase, cur_increase))
+            longest_k = max(
+                longest_k, cur_increase // 2, min(prev_increase, cur_increase)
+            )
         return longest_k >= k

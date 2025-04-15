@@ -3,7 +3,7 @@ from collections import defaultdict
 
 def threeSumMulti(self, arr: list[int], target: int) -> int:
     total = 0
-    mod = 10 ** 9 + 7
+    mod = 10**9 + 7
 
     ones = defaultdict(int)
     twos = defaultdict(int)

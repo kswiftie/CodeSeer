@@ -22,10 +22,10 @@ class Solution:
             return min([(x, abs(target - x)) for x in nums], key=lambda x: x[1])[0]
 
         closest = sum(nums[:k])
-        for i, x in enumerate(nums[:-k + 1]):
+        for i, x in enumerate(nums[: -k + 1]):
             if i > 0 and x == nums[i - 1]:
                 continue
-            current = self.KSumClosest(nums[i + 1:], k - 1, target - x) + x
+            current = self.KSumClosest(nums[i + 1 :], k - 1, target - x) + x
             if abs(target - current) < abs(target - closest):
                 if current == target:
                     return target

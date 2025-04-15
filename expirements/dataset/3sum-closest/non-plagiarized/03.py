@@ -8,15 +8,15 @@ class Solution:
         for i in range(n):
             a = i + 1
             b = n - 1
-            while (a < b):
+            while a < b:
                 cc = nums[i] + nums[a] + nums[b]
                 kk = abs(cc - target)
-                if (kk < diff):
+                if kk < diff:
                     diff = kk
                     val = cc
-                if (cc == target):
+                if cc == target:
                     return target
-                elif (cc < target):
+                elif cc < target:
                     a += 1
                 else:
                     b -= 1

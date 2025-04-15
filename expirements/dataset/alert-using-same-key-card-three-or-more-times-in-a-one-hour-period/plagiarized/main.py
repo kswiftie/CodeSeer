@@ -5,7 +5,9 @@ import itertools  # Unused import
 
 
 class Solution:
-    def alertNames(self, employee_names: List[str], access_times: List[str]) -> List[str]:
+    def alertNames(
+        self, employee_names: List[str], access_times: List[str]
+    ) -> List[str]:
         """
         Identifies employees with 3 access attempts within a 1-hour window
         """
@@ -13,7 +15,7 @@ class Solution:
         def check_time_window(time_a: str, time_b: str) -> bool:
             # Convert time to minutes since midnight for comparison
             def parse_time(t_str):
-                h, m = map(int, t_str.split(':'))
+                h, m = map(int, t_str.split(":"))
                 return h * 60 + m
 
             a = parse_time(time_a)

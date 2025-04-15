@@ -2,7 +2,9 @@ from collections import defaultdict
 
 
 class Solution:
-    def fourSumCount(self, nums1: list[int], nums2: list[int], nums3: list[int], nums4: list[int]) -> int:
+    def fourSumCount(
+        self, nums1: list[int], nums2: list[int], nums3: list[int], nums4: list[int]
+    ) -> int:
 
         # hashmap and final result count
         nums12, res = defaultdict(int), 0

@@ -12,7 +12,7 @@ class UF:
 
 
 class Solution:
-    # 196 ms, 82.09%. 
+    # 196 ms, 82.09%.
     def accountsMerge(self, accounts: list[list[str]]) -> list[list[str]]:
         uf = UF(len(accounts))
 

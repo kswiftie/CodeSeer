@@ -18,12 +18,17 @@ class UniXcoder(nn.Module):
         if not os.path.exists(cachepath):
             print(
                 """The folder with the model was not found.
-The download starts. Its size is ~ 500 MB""")
+The download starts. Its size is ~ 500 MB"""
+            )
         super(UniXcoder, self).__init__()
-        self.tokenizer = RobertaTokenizer.from_pretrained(model_name, cache_dir=cachepath)
+        self.tokenizer = RobertaTokenizer.from_pretrained(
+            model_name, cache_dir=cachepath
+        )
         self.config = RobertaConfig.from_pretrained(model_name, cache_dir=cachepath)
         self.config.is_decoder = True
-        self.model = RobertaModel.from_pretrained(model_name, config=self.config, cache_dir=cachepath)
+        self.model = RobertaModel.from_pretrained(
+            model_name, config=self.config, cache_dir=cachepath
+        )
 
         self.register_buffer(
             "bias",
@@ -59,25 +64,25 @@ The download starts. Its size is ~ 500 MB""")
             if mode == "<encoder-only>":
                 tokens = tokens[: max_length - 4]
                 tokens = (
-                        [tokenizer.cls_token, mode, tokenizer.sep_token]
-                        + tokens
-                        + [tokenizer.sep_token]
+                    [tokenizer.cls_token, mode, tokenizer.sep_token]
+                    + tokens
+                    + [tokenizer.sep_token]
                 )
             elif mode == "<decoder-only>":
-                tokens = tokens[-(max_length - 3):]
+                tokens = tokens[-(max_length - 3) :]
                 tokens = [tokenizer.cls_token, mode, tokenizer.sep_token] + tokens
             else:
                 tokens = tokens[: max_length - 5]
                 tokens = (
-                        [tokenizer.cls_token, mode, tokenizer.sep_token]
-                        + tokens
-                        + [tokenizer.sep_token]
+                    [tokenizer.cls_token, mode, tokenizer.sep_token]
+                    + tokens
+                    + [tokenizer.sep_token]
                 )
 
             tokens_id = tokenizer.convert_tokens_to_ids(tokens)
             if padding:
                 tokens_id = tokens_id + [self.config.pad_token_id] * (
-                        max_length - len(tokens_id)
+                    max_length - len(tokens_id)
                 )
             tokens_ids.append(tokens_id)
         return tokens_ids
@@ -109,7 +114,7 @@ The download starts. Its size is ~ 500 MB""")
         return token_embeddings, sentence_embeddings
 
     def generate(
-            self, source_ids, decoder_only=True, eos_id=None, beam_size=5, max_length=64
+        self, source_ids, decoder_only=True, eos_id=None, beam_size=5, max_length=64
     ):
         """Generate sequence given context (source_ids)"""
 
@@ -133,13 +138,13 @@ The download starts. Its size is ~ 500 MB""")
         encoder_output = self.model(source_ids, attention_mask=mask)
         for i in range(source_ids.shape[0]):
             context = [
-                [x[i: i + 1, :, : source_len[i]].repeat(beam_size, 1, 1, 1) for x in y]
+                [x[i : i + 1, :, : source_len[i]].repeat(beam_size, 1, 1, 1) for x in y]
                 for y in encoder_output.past_key_values
             ]
             beam = Beam(beam_size, eos_id, device)
             input_ids = beam.getCurrentState().clone()
-            context_ids = source_ids[i: i + 1, : source_len[i]].repeat(beam_size, 1)
-            out = encoder_output.last_hidden_state[i: i + 1, : source_len[i]].repeat(
+            context_ids = source_ids[i : i + 1, : source_len[i]].repeat(beam_size, 1)
+            out = encoder_output.last_hidden_state[i : i + 1, : source_len[i]].repeat(
                 beam_size, 1, 1
             )
             for _ in range(max_length):
@@ -158,8 +163,8 @@ The download starts. Its size is ~ 500 MB""")
                     out = self.model(
                         input_ids,
                         attention_mask=self.bias[
-                                       :, context_ids.size(-1): length, :length
-                                       ],
+                            :, context_ids.size(-1) : length, :length
+                        ],
                         past_key_values=context,
                     ).last_hidden_state
                     hidden_states = out[:, -1, :]

@@ -1,11 +1,11 @@
 class Solution:
     def threeSumClosest(self, nums: list[int], target: int) -> int:
         nums = sorted(nums)
-        diff = float('inf')
+        diff = float("inf")
         for i in range(len(nums) - 1):
             start = i + 1
             end = len(nums) - 1
-            while (start < end):
+            while start < end:
                 sum = nums[i] + nums[start] + nums[end]
                 if sum == target:
                     return target

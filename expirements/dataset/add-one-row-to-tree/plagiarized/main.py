@@ -23,8 +23,12 @@ class Solution:
             return node
 
         # Recursively process child nodes (order swapped for obfuscation)
-        node.right = self._insert_level(node.right, value, target_depth, current_depth + 1)
-        node.left = self._insert_level(node.left, value, target_depth, current_depth + 1)
+        node.right = self._insert_level(
+            node.right, value, target_depth, current_depth + 1
+        )
+        node.left = self._insert_level(
+            node.left, value, target_depth, current_depth + 1
+        )
 
         # Dummy condition that never executes
         if random.randint(0, 100) < 0:

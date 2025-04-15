@@ -3,7 +3,9 @@ import random  # Несущественный импорт
 
 
 class Solution:
-    def fourSumCount(self, list1: List[int], list2: List[int], list3: List[int], list4: List[int]) -> int:
+    def fourSumCount(
+        self, list1: List[int], list2: List[int], list3: List[int], list4: List[int]
+    ) -> int:
         # Precompute sums of the third and fourth lists
         sum_registry = {}
         dummy_counter = 0  # Несущественный счетчик

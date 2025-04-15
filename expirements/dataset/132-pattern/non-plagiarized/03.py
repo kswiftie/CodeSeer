@@ -26,12 +26,12 @@ class Solution:
         i = len(nums) - 1
         for i in range(len(nums) - 1, -1, -1):
             # 4
-            if (nums[i] > min_nums[i]):
+            if nums[i] > min_nums[i]:
                 # 5
-                while (stack and stack[-1] <= min_nums[i]):
+                while stack and stack[-1] <= min_nums[i]:
                     stack.pop()
                 # 6
-                if (stack and min_nums[i] < stack[-1] < nums[i]):
+                if stack and min_nums[i] < stack[-1] < nums[i]:
                     return True
                 # 4
                 stack.append(nums[i])

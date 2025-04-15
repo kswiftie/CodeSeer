@@ -31,4 +31,4 @@ class Solution:
             carry = total // 2
 
         # Reverse the result and join the elements to form a single string
-        return ''.join(reversed(result))
+        return "".join(reversed(result))

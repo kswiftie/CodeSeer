@@ -20,7 +20,9 @@ class Solution:
                 if nums[i] * N > target or nums[-1] * N < target:  # 4
                     break
                 if i == 0 or i > 0 and nums[i - 1] != nums[i]:  # 5
-                    self.helper(nums[i + 1:], target - nums[i], N - 1, res + [nums[i]], results)
+                    self.helper(
+                        nums[i + 1 :], target - nums[i], N - 1, res + [nums[i]], results
+                    )
 
     def twoSum(self, nums: list[int], target: int) -> list[int]:
         res = []

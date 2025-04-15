@@ -15,4 +15,4 @@ class Solution:
             s.append(str(carry % 2))
             carry //= 2
 
-        return ''.join(reversed(s))
+        return "".join(reversed(s))

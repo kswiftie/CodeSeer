@@ -10,15 +10,16 @@ class Solution:
                     return False
 
             for i in range(len(s)):
-                if s[0] == '0' and i > 0:
+                if s[0] == "0" and i > 0:
                     break
 
-                cur = int(s[:i + 1])
+                cur = int(s[: i + 1])
 
                 if len(seq) > 1 and cur != seq[-2] + seq[-1]:
                     continue
 
-                if dfs(s[i + 1:], seq + [cur]): return True
+                if dfs(s[i + 1 :], seq + [cur]):
+                    return True
             return False
 
         return dfs(num, [])

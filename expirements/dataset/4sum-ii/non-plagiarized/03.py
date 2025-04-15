@@ -1,5 +1,7 @@
 class Solution:
-    def fourSumCount(self, A: list[int], B: list[int], C: list[int], D: list[int]) -> int:
+    def fourSumCount(
+        self, A: list[int], B: list[int], C: list[int], D: list[int]
+    ) -> int:
         res, d = 0, {}
         for n1 in A:
             for n2 in B:

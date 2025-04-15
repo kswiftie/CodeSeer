@@ -37,18 +37,16 @@ class BasicInspections:
         for i in range(files_count):
             for j in range(i + 1, files_count):
                 result[f"{file_names[i]} to {file_names[j]}"] = (
-                        1
-                        - norm_levenstein.distance(
-                    self.repo_handler.get_file_content(file_urls[i]),
-                    self.repo_handler.get_file_content(file_urls[j]),
-                )
+                    1
+                    - norm_levenstein.distance(
+                        self.repo_handler.get_file_content(file_urls[i]),
+                        self.repo_handler.get_file_content(file_urls[j]),
+                    )
                 )
 
         return result
 
-    def compare_folders_levenstein(
-            self, *folder_inputs
-    ) -> dict[str, float]:
+    def compare_folders_levenstein(self, *folder_inputs) -> dict[str, float]:
         """
 
         :param folder_inputs:
@@ -63,7 +61,7 @@ class BasicInspections:
         for folder_url in folder_urls:
             file_links.append([])
             for file in self.repo_handler.get_list_of_files_in_folder(
-                    folder_url, types_for_selection=[".py"]
+                folder_url, types_for_selection=[".py"]
             ):
                 link = file["url"]
                 file_links[-1].append((link, get_the_name_of_link(link)))
@@ -73,14 +71,17 @@ class BasicInspections:
             for q in range(i + 1, folders_count):
                 for j in range(count_of_files_from_cur_folder):
                     # add results for cur file from cur folder
-                    result = {**result, **self.compare_files_levenstein(
-                        file_links[i][j], *file_links[q]
-                    )}
+                    result = {
+                        **result,
+                        **self.compare_files_levenstein(
+                            file_links[i][j], *file_links[q]
+                        ),
+                    }
 
         return result
 
     def compare_files_with_folders_levenstein(
-            self, file_inputs: list[str], folder_inputs: list[str]
+        self, file_inputs: list[str], folder_inputs: list[str]
     ) -> dict[str, float]:
         """
 
@@ -97,13 +98,16 @@ class BasicInspections:
         for i in range(len(file_urls)):  # for each file
             for j in range(len(folder_urls)):  # for each folder
                 for file in self.repo_handler.get_list_of_files_in_folder(
-                        folder_urls[j], types_for_selection=[".py"]
+                    folder_urls[j], types_for_selection=[".py"]
                 ):
                     link = file["url"]
-                    result = {**result, **self.compare_files_levenstein(
-                        (file_urls[i], file_names[i]),
-                        (link, get_the_name_of_link(link)),
-                    )}
+                    result = {
+                        **result,
+                        **self.compare_files_levenstein(
+                            (file_urls[i], file_names[i]),
+                            (link, get_the_name_of_link(link)),
+                        ),
+                    }
 
         return result
 
@@ -137,12 +141,16 @@ class BasicResultsHandler(BasicInspections):
 
     @inputs_preprocessing2
     def handle_compare_files_with_folders_levenstein(
-            self, file_inputs: list[str], folder_inputs: list[str]
+        self, file_inputs: list[str], folder_inputs: list[str]
     ) -> str:
 
-        func_result = super().compare_files_with_folders_levenstein(file_inputs, folder_inputs)
+        func_result = super().compare_files_with_folders_levenstein(
+            file_inputs, folder_inputs
+        )
 
-        part_to_report = """check using levenstein (comparing of files with folders)\n"""
+        part_to_report = (
+            """check using levenstein (comparing of files with folders)\n"""
+        )
         for compared_names, res_coeff in func_result.items():
             part_to_report += f"""<p>Similarity of {compared_names} is {get_the_coeff_part(res_coeff * 100)}</p>"""
 

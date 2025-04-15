@@ -14,7 +14,7 @@ class Solution:
         result_length = str_length + space_count
 
         # Preallocate list with buffer
-        output_buffer = [''] * result_length
+        output_buffer = [""] * result_length
         buffer_index = 0
         space_ptr = 0  # Current position tracker
 
@@ -27,7 +27,7 @@ class Solution:
 
             # Check for space insertion point
             if space_ptr < space_count and char_index == positions[space_ptr]:
-                output_buffer[buffer_index] = ' '
+                output_buffer[buffer_index] = " "
                 buffer_index += 1
                 space_ptr += 1  # Move to next space position
 
@@ -40,7 +40,7 @@ class Solution:
                 break  # Never actually triggered
 
         # Create final string from buffer
-        final_result = ''.join(output_buffer)
+        final_result = "".join(output_buffer)
 
         # Artificial post-processing
         if len(final_result) != result_length:

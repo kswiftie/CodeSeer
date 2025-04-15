@@ -26,27 +26,34 @@ class Solution:
                     # Handle different triplet cases
                     if nums[index] < nums[left] < nums[right]:  # All elements distinct
                         result += (
-                                frequency[nums[index]]
-                                * frequency[nums[left]]
-                                * frequency[nums[right]]
+                            frequency[nums[index]]
+                            * frequency[nums[left]]
+                            * frequency[nums[right]]
                         )
-                    elif nums[index] == nums[left] < nums[right]:  # First two elements same
+                    elif (
+                        nums[index] == nums[left] < nums[right]
+                    ):  # First two elements same
                         result += (
-                                frequency[nums[index]]
-                                * (frequency[nums[index]] - 1) // 2
-                                * frequency[nums[right]]
+                            frequency[nums[index]]
+                            * (frequency[nums[index]] - 1)
+                            // 2
+                            * frequency[nums[right]]
                         )
-                    elif nums[index] < nums[left] == nums[right]:  # Last two elements same
+                    elif (
+                        nums[index] < nums[left] == nums[right]
+                    ):  # Last two elements same
                         result += (
-                                frequency[nums[index]]
-                                * frequency[nums[left]]
-                                * (frequency[nums[left]] - 1) // 2
+                            frequency[nums[index]]
+                            * frequency[nums[left]]
+                            * (frequency[nums[left]] - 1)
+                            // 2
                         )
                     else:  # All three elements same
                         result += (
-                                frequency[nums[index]]
-                                * (frequency[nums[index]] - 1)
-                                * (frequency[nums[index]] - 2) // 6
+                            frequency[nums[index]]
+                            * (frequency[nums[index]] - 1)
+                            * (frequency[nums[index]] - 2)
+                            // 6
                         )
 
                     # Skip duplicates
@@ -55,4 +62,4 @@ class Solution:
 
             index += frequency[nums[index]]
 
-        return result % (10 ** 9 + 7)
+        return result % (10**9 + 7)
