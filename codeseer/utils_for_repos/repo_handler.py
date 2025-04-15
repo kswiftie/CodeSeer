@@ -1,33 +1,53 @@
-import os, requests, base64, re
+import os, requests, base64, re, ast, functools
+from codeseer.inspections.inspection_tools.general_tools import remove_comments
+
+
+def is_valid_python_code(code: str) -> bool:
+    """
+    Verifies that the inputted code is valid
+    """
+    try:
+        ast.parse(code)
+        return True
+    except SyntaxError:
+        return False
+
+
+def allow_python_code(func):
+    """
+    Since RepoHandler was written to work with links,
+    it will return an error when receiving the code.
+
+    This decorator checks that the entered code is correct
+    and skips it past the RepoHandler functions.
+    """
+
+    @functools.wraps(func)
+    def wrapper(self, input):
+        if is_valid_python_code(input):
+            return input
+        return func(self, input)
+
+    return wrapper
 
 
 class RepoHandler:
     def __init__(self, user_github_token: str):
-        """
-        init
-
-        Parameters
-        ----------
-        user_github_token: str
-            GitHub user token for API requests
-        """
         self.headers = {"Authorization": f"token {user_github_token}"}
 
+    @allow_python_code
     def handle_github_url(self, url: str) -> str:
         """
         A function that converts a link to a project
         on GitHub into a request to the GitHub API.
         If the correct link is passed, nothing will happen to it.
 
-        Parametrs
-        ---------
-        url: str
-            Link to the project on GitHub
+        Args:
+            url:
+                Link on the GitHub.
 
-        Returns
-        -------
-        api_request: str
-            Request to GitHub API
+        Returns:
+            Request to GitHub API.
         """
 
         api_pattern = (
@@ -60,50 +80,45 @@ class RepoHandler:
         )
         return api_request
 
-    def get_file_info(self, file_url: str) -> tuple[str, int]:
+    @allow_python_code
+    def get_file_content(self, file_url: str) -> str:
         """
         The function accepts a link to the file as input
-        and returns its contents as a string and its size
+        and returns its contents.
 
-        Parametrs
-        ---------
-        file_url: str
-            Link to the file to get information about
+        Args:
+            file_url:
+                Link to the file to get information about.
 
-        Returns
-        -------
-        Result: tuple[str, int]
-            A pair is the contents of the file and its size
+        Returns:
+            The contents of the file.
         """
 
         response = requests.get(self.handle_github_url(file_url), headers=self.headers)
         try:
             file_info = response.json()
-            file_content, file_size = (
-                base64.b64decode(file_info["content"]).decode("utf-8"),
-                file_info["size"],
-            )
-            return file_content, file_size
+            file_content = base64.b64decode(file_info["content"]).decode("utf-8")
+            return remove_comments(file_content)
         except Exception as ex:
-            # print(ex)
-            return "", 0
+            print(f"ERROR: {ex}")
+            quit()
 
-    def get_list_of_files_in_folder(self, folder_url: str) -> list[dict[str, str]]:
+    def get_list_of_files_in_folder(self, folder_url: str, types_for_selection: list[str] = [".py"]) -> list[
+        dict[str, str]]:
         """
         The function accepts a link to a folder as input
         and returns a list of all files stored inside this folder.
         At the moment, the function will also return
         files located inside child folders.
 
-        Parametrs
-        ---------
-        folder_url: str
-            Link to the folder
+        Args:
+            folder_url:
+                Link to the folder.
+            types_for_selection:
+                List of file extensions to consider.
 
-        Returns
-        -------
-        Result: list[dict[str, str]]
-            A list of files inside a given folder
+        Returns:
+            A list of files inside a given folder.
         """
 
         response = requests.get(
@@ -117,19 +132,19 @@ class RepoHandler:
                 response_info = [response_info]
             for obj in response_info:
                 if obj["type"] == "file":
-                    files_list.append(obj)
-                if obj["type"] == "dir":
-                    files_list.extend(self.get_list_of_files_in_folder(obj["url"]))
+                    if types_for_selection and f".{obj["name"].split('.')[-1]}" in types_for_selection:
+                        files_list.append(obj)
+                # if obj["type"] == "dir": I guess it is wrong
+                #     files_list.extend(self.get_list_of_files_in_folder(obj["url"]))
         except Exception as ex:
-            print(ex, self.handle_github_url(folder_url), self.headers)
+            print(f"ERROR: {ex}")
+            quit()
 
         return files_list
 
     def get_list_of_folders_in_folder(self, folder_url: str) -> list[dict[str, str]]:
         """
-
-        :param folder_url:
-        :return:
+        Returns the list of folders in folder by the entered url
         """
         response = requests.get(
             self.handle_github_url(folder_url), headers=self.headers
@@ -145,31 +160,7 @@ class RepoHandler:
                     folders_list.append(obj)
                     folders_list.extend(self.get_list_of_folders_in_folder(obj["url"]))
         except Exception as ex:
-            print(ex)
+            print(f"ERROR: {ex}")
+            quit()
 
         return folders_list
-
-    def get_folder_size(self, folder_url: str) -> float:
-        """
-
-        :param folder_url:
-        :return:
-        """
-        response = requests.get(
-            self.handle_github_url(folder_url), headers=self.headers
-        )
-        folder_size = 0.0
-
-        try:
-            response_info = response.json()
-            if isinstance(response_info, dict):
-                response_info = [response_info]
-            for obj in response_info:
-                if obj["size"] == 0:
-                    folder_size += self.get_folder_size(obj["url"])
-                else:
-                    folder_size += obj["size"]
-        except Exception as ex:
-            print(ex)
-
-        return folder_size

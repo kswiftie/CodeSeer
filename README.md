@@ -1,8 +1,10 @@
 # About CodeSeer
+
 A project to search for plagiarism in a Python code or project.
-Codeseer will use many different methods to search for plagiarism in projects (at the moment only the simplest checks are available, development is underway on a check using tokenization)
+CodeSeer uses different checks to analyze program codes for similarity.
+For more information, look at /docs.
 
-Works with Projects posted on GitHub.
-To compare 2 projects, it is enough to send a link to GitHub with the project
+---
+Released for Python 3.12.6
 
-At the moment, only 2 projects can be compared at a time
+This repository uses [Unicoder from Microsoft](https://github.com/microsoft/CodeBERT/blob/master/UniXcoder/unixcoder.py)

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usage Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        ul {
+            margin-left: 20px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 5px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #f9f9f9;
+            border-left: 5px solid #3498db;
+            padding: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Usage Guide</h1>
+
+    <p>You can find the usage examples in the <code>/examples</code> directory (currently only <code>tokenization_inspections_usage.py</code> is complete).</p>
+
+    <h2>1. Initial Setup</h2>
+    <p>To begin, import the following classes from Codeseer:</p>
+    <pre><code>from codeseer import RepoHandler, ReportCompiler</code></pre>
+
+    <p>Next, initialize the instances:</p>
+    <ul>
+        <li><strong>RepoHandler</strong>: Pass your GitHub token to the constructor.</li>
+        <li><strong>ReportCompiler</strong>: Pass the earlier created instance of <code>RepoHandler</code> to the constructor.</li>
+    </ul>
+
+    <h2>2. Generating a Report</h2>
+    <p>Now you can call the <code>make_report</code> method from the <code>ReportCompiler</code> instance:</p>
+    <ul>
+        <li>Provide the path where the report will be saved (including the filename).</li>
+        <li>Pass a list of checks as a dictionary, where the key is the class name and the value is the list of checks for that class.</li>
+        <li>Pass a list of GitHub links or code snippets for which the checks should be performed. You can also pass a tuple with the first element as the link/code and the second as a custom name for the item. Alternatively, you can let Codeseer generate the names automatically.</li>
+    </ul>
+
+    <h2>3. Available Checks</h2>
+    <p>The following checks are available at the moment:</p>
+    <ul>
+        <li><strong>TokenizationInspections:</strong>
+            <ul>
+                <li>compare_files_standart</li>
+                <li>compare_folders_standart</li>
+                <li>compare_files_nn</li>
+                <li>compare_folders_nn</li>
+                <li>compare_files_with_folders_standart</li>
+                <li>compare_files_with_folders_nn</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="note">
+        <strong>Note:</strong> For detailed information about the checks, refer to the documentation in <code>/docs</code>.
+    </div>
+
+</body>
+</html>
