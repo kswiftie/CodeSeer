@@ -5,6 +5,25 @@ from codeseer.inspections import (
     ASTResultsHandler,
 )  # This is needed to use globals()
 
+AVAILABLE_INSPECTIONS: dict[str, list[str]] = {
+    "BasicInspections": [
+        "compare_files_levenstein",
+        "compare_folders_levenstein",
+        "compare_files_with_folders_levenstein",
+    ],
+    "TokenizationInspections": [
+        "compare_files_standart",
+        "compare_folders_standart",
+        "compare_files_nn",
+        "compare_folders_nn",
+        "compare_files_with_folders_standart",
+        "compare_files_with_folders_nn",
+    ],
+    "ASTInspections": [
+        "compare_files_hash",
+    ],
+}
+
 
 def save_file(file_path: str, content: str) -> None:
     """
@@ -21,30 +40,12 @@ def save_file(file_path: str, content: str) -> None:
 
 
 class ReportCompiler:
-    _AVAILABLE_INSPECTIONS: dict[str, list[str]] = {
-        "BasicInspections": [
-            "compare_files_levenstein",
-            "compare_folders_levenstein",
-            "compare_files_with_folders_levenstein",
-        ],
-        "TokenizationInspections": [
-            "compare_files_standart",
-            "compare_folders_standart",
-            "compare_files_nn",
-            "compare_folders_nn",
-            "compare_files_with_folders_standart",
-            "compare_files_with_folders_nn",
-        ],
-        "ASTInspections": [
-            "compare_files_hash",
-        ],
-    }
 
     def __init__(self, repo_handler: object):
         self.repo_handler = repo_handler
 
     def make_report(
-        self, path: str = "./", inspections_to_do: dict[str, list[str]] = {}, *inputs
+            self, path: str = "./", inspections_to_do: dict[str, list[str]] = {}, *inputs
     ) -> None:
         """
         A function for creating reports.
@@ -232,7 +233,7 @@ function toggleContent(id) {
 </section>
             """
                 if (inspections_data[inspection_class_name + "Heading"])
-                and (inspections_data[inspection_class_name + "Content"])
+                   and (inspections_data[inspection_class_name + "Content"])
                 else ""
             )
 
@@ -243,7 +244,7 @@ function toggleContent(id) {
         }
 
         if not inspections_to_do:
-            inspections_to_do = self._AVAILABLE_INSPECTIONS
+            inspections_to_do = AVAILABLE_INSPECTIONS
 
         for inspection_class_name, list_of_inspections in inspections_to_do.items():
             inspections_data[inspection_class_name + "Heading"] = make_header(
@@ -254,7 +255,7 @@ function toggleContent(id) {
                     self.repo_handler
                 )
                 inspections_data[inspection_class_name + "Content"] += (
-                    getattr(inspection, "handle_" + inspection_name)(*inputs) + "\n"
+                        getattr(inspection, "handle_" + inspection_name)(*inputs) + "\n"
                 )
 
         body = f"""

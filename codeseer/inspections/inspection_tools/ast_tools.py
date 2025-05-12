@@ -2,6 +2,41 @@ import ast, hashlib
 import networkx as nx
 from typing import Any
 
+NODE_NORMALIZATION = {
+    "For": "Loop",
+    "AsyncFor": "Loop",
+    "While": "Loop",
+    "FunctionDef": "Func",
+    "AsyncFunctionDef": "Func",
+    "Lambda": "Func",  # Not sure.
+    # "With": "With",
+    "AsyncWith": "With",
+    "IfExp": "If",
+    "Compare": "BinOP",  # Not sure.
+    # "Try": "Try",
+    "TryStar": "Try",
+    "Break": "Control",
+    "Continue": "Control",
+    "Pass": "Control",
+    # "Import": "Import",
+    "ImportFrom": "Import",
+    "Return": "Flow",
+    "Raise": "Flow",
+    "Yield": "Flow",
+    "YieldFrom": "Flow",
+    "ListComp": "Comprehension",
+    "SetComp": "Comprehension",
+    "DictComp": "Comprehension",
+    "GeneratorExp": "Comprehension",
+    "Assign": "Assign",
+    "AnnAssing": "Assign",
+    "Attribute": "Access",
+    "Subscript": "Access",
+    # "BinOp": "BinOp",
+    "UnaryOp": "BinOp", # hmm
+    "BoolOp": "BinOp" # hmm
+}
+
 
 def get_subtree(tree: nx.DiGraph, root_id: int) -> nx.DiGraph:
     """
@@ -25,31 +60,53 @@ def get_subtree(tree: nx.DiGraph, root_id: int) -> nx.DiGraph:
     return tree.subgraph(subtree_nodes).copy()
 
 
-def build_ast(code: str) -> nx.DiGraph:
+def get_branches(tree: nx.DiGraph, root_id: int) -> list[nx.DiGraph]:
     """
-    Builds AST (abstract syntax tree) by inputted code.
+    Возвращает список всех подграфов-ветвей, исходящих от root_id.
 
     Args:
-        code:
-            The python code to build the AST from.
+        tree: граф AST (ориентированное дерево)
+        root_id: идентификатор корня
 
     Returns:
-        AST. It is undirected.
+        Список подграфов (каждая ветка — поддерево от одного из потомков root_id)
+    """
+    branches = []
+    for child_id in tree.successors(root_id):
+        branch_nodes = nx.descendants(tree, child_id) | {child_id} | {root_id}
+        subgraph = tree.subgraph(branch_nodes).copy()
+        branches.append(subgraph)
+    return branches
+
+
+def build_ast(code: str) -> nx.DiGraph:
+    """
+    Builds AST (abstract syntax tree) from inputted code.
+
+    Args:
+        code: The Python code to build the AST from.
+
+    Returns:
+        AST as a directed graph.
     """
 
     graph = nx.DiGraph()
+    cur_id = 0
 
-    def dfs(current_node: ast.AST, parent: Any = None):
-        node_id = id(current_node)
+    def dfs(current_node: ast.AST, parent_id=None):
+        nonlocal cur_id
+        node_id = cur_id
+        cur_id += 1
         node_type = type(current_node).__name__
-        graph.add_node(node_id, label=node_type)
-        if parent is not None:
-            graph.add_edge(id(parent), node_id)
+        graph.add_node(node_id, label=NODE_NORMALIZATION.get(node_type, node_type))
+
+        if parent_id is not None:
+            graph.add_edge(parent_id, node_id)
         for child in ast.iter_child_nodes(current_node):
-            dfs(child, current_node)
+            dfs(child, node_id)
 
-    dfs(ast.parse(code))
-
+    tree = ast.parse(code)
+    dfs(tree)
     return graph
 
 
@@ -78,6 +135,18 @@ def hash_tree(tree: nx.DiGraph, node: int) -> str:
     return hashlib.sha256(combined.encode()).hexdigest()
 
 
+def hash_tree_structure(tree: nx.DiGraph, root: int, parent: int = None) -> str:
+    children = [n for n in tree.successors(root) if n != parent]
+
+    child_hashes = [hash_tree_structure(tree, child, root) for child in children]
+
+    child_hashes.sort()
+
+    structure_str = "(" + "".join(child_hashes) + ")"
+
+    return hashlib.sha256(structure_str.encode('utf-8')).hexdigest()
+
+
 def generate_subtrees_hashes(tree: nx.DiGraph) -> list[str]:
     """
     Accepts a tree as input and returns a list of hashes of its subtrees.
@@ -90,7 +159,8 @@ def generate_subtrees_hashes(tree: nx.DiGraph) -> list[str]:
     Returns:
         The list of the subtrees hashes for inputted tree.
     """
-    avaliable_roots = ["FunctionDef", "For", "While", "If"]
+    # avaliable_roots = {"FunctionDef", "ClassDef", "For", "While", "If", "Try", "With", "Expr"}
+    avaliable_roots = {"FunctionDef", "ClassDef", "Loop", "If", "Try", "With", "Expr"}
     nodes = tree.nodes()
     res = []
 
@@ -98,7 +168,9 @@ def generate_subtrees_hashes(tree: nx.DiGraph) -> list[str]:
         cur_node_data = tree.nodes[cur_node_id]
 
         if cur_node_data["label"] in avaliable_roots:
-            res.append(hash_tree(get_subtree(tree, cur_node_id), cur_node_id))
+            res.extend([hash_tree(subtree, cur_node_id) for subtree in get_branches(tree, cur_node_id)])
+            # res.extend([hash_tree_structure(subtree, cur_node_id) for subtree in get_branches(tree, cur_node_id)])
+            # res.append(hash_tree_structure(get_subtree(tree, cur_node_id), cur_node_id))
 
         for child_id in tree.successors(cur_node_id):
             dfs(child_id)

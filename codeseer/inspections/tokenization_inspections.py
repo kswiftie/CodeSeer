@@ -1,7 +1,7 @@
-import torch
+import torch, math
 from .inspection_tools.unixcoder import UniXcoder
 from collections import Counter
-from nltk.metrics.distance import edit_distance
+from nltk.metrics.distance import edit_distance, jaccard_distance
 from codeseer.utils_for_repos import RepoHandler
 
 from .inspection_tools.tokenization_tools import (
@@ -69,20 +69,33 @@ class TokenizationInspections:
 
         for i in range(files_count):
             for j in range(i + 1, files_count):
-                if True:
-                    lev_distance = edit_distance(
-                        sorted(file_tokens[i]), sorted(file_tokens[j])
-                    )
-                    max_len = max(len(file_tokens[i]), len(file_tokens[j]))
-                    similarity = 1 - (lev_distance / max_len)
+                # lev_distance = edit_distance(
+                #     sorted(file_tokens[i]), sorted(file_tokens[j])
+                # )
+                # max_len = max(len(file_tokens[i]), len(file_tokens[j]))
+                # # print(sorted(file_tokens[i]))
+                # # print(sorted(file_tokens[j]))
+                # # print(lev_distance, lev_distance / max_len, end="\n\n")
+                # similarity = 1 - (lev_distance / max_len)
+                #
+                # # similarity *= multiset_jaccard_similarity(file_tokens[i], file_tokens[j])
+                # # print(similarity, cos_similarity_counter_modififed(file_counters[i], file_counters[j]), end="\n\n")
+                # similarity *= cos_similarity_counter_modififed(file_counters[i], file_counters[j])
 
-                    result[f"{file_names[i]} to {file_names[j]}"] = similarity
-                else:
-                    result[f"{file_names[i]} to {file_names[j]}"] = (
-                        cos_similarity_counter_modififed(
-                            file_counters[i], file_counters[j]
-                        )
-                    )
+                def normalized_levenshtein(tokens1, tokens2):
+                    dist = edit_distance(tokens1, tokens2)
+                    return 1 - dist / max(len(tokens1), len(tokens2))
+
+                alpha = 0.5
+                lev_sim = normalized_levenshtein(file_tokens[i], file_tokens[j])
+                cos_sim = cos_similarity_counter_modififed(file_counters[i], file_counters[j])
+                # print(lev_sim, cos_sim, end="\n\n")
+
+                similarity = alpha * lev_sim + (1 - alpha) * cos_sim
+                similarity = 1 / (1 + math.exp(-20 * (similarity - 0.5)))
+                # similarity = lev_sim * cos_sim
+
+                result[f"{file_names[i]} to {file_names[j]}"] = similarity
 
         return result
 
@@ -117,7 +130,7 @@ class TokenizationInspections:
         for folder_url in folder_urls:
             file_links.append([])
             for file in self.repo_handler.get_list_of_files_in_folder(
-                folder_url, types_for_selection=[".py"]
+                    folder_url, types_for_selection=[".py"]
             ):
                 link = file["url"]
                 file_links[-1].append((link, get_the_name_of_link(link)))
@@ -176,14 +189,10 @@ class TokenizationInspections:
                 emb2 = get_normalized_embedding(
                     files_content[j], self.model, self.device
                 )
-                if True:  # In testing
-                    result[f"{file_names[i]} to {file_names[j]}"] = (
-                        cosine_between_tensors(emb1, emb2)
-                    )
-                else:
-                    result[f"{file_names[i]} to {file_names[j]}"] = (
-                        euclidean_similarity(emb1, emb2)
-                    )
+
+                similarity = cosine_between_tensors(emb1, emb2) * euclidean_similarity(emb1, emb2)
+                similarity = 1 / (1 + math.exp(-20 * (similarity - 0.5)))
+                result[f"{file_names[i]} to {file_names[j]}"] = similarity
 
         return result
 
@@ -216,7 +225,7 @@ class TokenizationInspections:
         for folder_url in folder_urls:
             file_links.append([])
             for file in self.repo_handler.get_list_of_files_in_folder(
-                folder_url, types_for_selection=[".py"]
+                    folder_url, types_for_selection=[".py"]
             ):
                 link = file["url"]
                 file_links[-1].append((link, get_the_name_of_link(link)))
@@ -236,7 +245,7 @@ class TokenizationInspections:
         return result
 
     def compare_files_with_folders_standart(
-        self, file_inputs: list[str], folder_inputs: list[str]
+            self, file_inputs: list[str], folder_inputs: list[str]
     ) -> dict[str, float]:
         """
         This function compares files with all files from folders.
@@ -267,7 +276,7 @@ class TokenizationInspections:
             for j in range(len(folder_urls)):  # for each folder
                 count_of_files_in_cur_folder = 0
                 for file in self.repo_handler.get_list_of_files_in_folder(
-                    folder_urls[j], types_for_selection=[".py"]
+                        folder_urls[j], types_for_selection=[".py"]
                 ):
                     count_of_files_in_cur_folder += 1
                     link = file["url"]
@@ -283,7 +292,7 @@ class TokenizationInspections:
         return result
 
     def compare_files_with_folders_nn(
-        self, file_inputs: list[str], folder_inputs: list[str]
+            self, file_inputs: list[str], folder_inputs: list[str]
     ) -> dict[str, float]:
         """
         This function compares files with all files from folders.
@@ -315,7 +324,7 @@ class TokenizationInspections:
             for j in range(len(folder_urls)):  # for each folder
                 count_of_files_in_cur_folder = 0
                 for file in self.repo_handler.get_list_of_files_in_folder(
-                    folder_urls[j], types_for_selection=[".py"]
+                        folder_urls[j], types_for_selection=[".py"]
                 ):
                     count_of_files_in_cur_folder += 1
                     link = file["url"]
@@ -388,7 +397,7 @@ class TokenizationResultsHandler(TokenizationInspections):
 
     @inputs_preprocessing2
     def handle_compare_files_with_folders_standart(
-        self, file_inputs: list[str], folder_inputs: list[str]
+            self, file_inputs: list[str], folder_inputs: list[str]
     ) -> str:
         func_result = super().compare_files_with_folders_standart(
             file_inputs, folder_inputs
@@ -404,7 +413,7 @@ class TokenizationResultsHandler(TokenizationInspections):
 
     @inputs_preprocessing2
     def handle_compare_files_with_folders_nn(
-        self, file_inputs: list[str], folder_inputs: list[str]
+            self, file_inputs: list[str], folder_inputs: list[str]
     ) -> str:
         func_result = super().compare_files_with_folders_nn(file_inputs, folder_inputs)
 

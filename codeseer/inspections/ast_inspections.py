@@ -61,8 +61,7 @@ class ASTInspections:
                     )
 
                 result[f"{files_names[i]}-{files_names[j]}"] = (
-                    count_of_sim_hashes
-                    / min(len(files_hashes[i]), len(files_hashes[j]))
+                        count_of_sim_hashes / min(len(files_hashes[i]), len(files_hashes[j]))
                 )
 
         return result
@@ -96,7 +95,7 @@ class ASTInspections:
         for folder_url in folder_urls:
             file_links.append([])
             for file in self.repo_handler.get_list_of_files_in_folder(
-                folder_url, types_for_selection=[".py"]
+                    folder_url, types_for_selection=[".py"]
             ):
                 link = file["url"]
                 file_links[-1].append((link, get_the_name_of_link(link)))
@@ -117,7 +116,7 @@ class ASTInspections:
         return result
 
     def compare_files_with_folders(
-        self, file_inputs: list[str], folder_inputs: list[str]
+            self, file_inputs: list[str], folder_inputs: list[str]
     ) -> dict[str, float]:
         """
         This function compares inputted files with all files from inputted folders.
@@ -149,7 +148,7 @@ class ASTInspections:
                 compared_file_with_folder = f"{file_names[i]} to {folder_names[j]}"
                 count_of_files_in_cur_folder = 0
                 for file in self.repo_handler.get_list_of_files_in_folder(
-                    folder_urls[j], types_for_selection=[".py"]
+                        folder_urls[j], types_for_selection=[".py"]
                 ):
                     count_of_files_in_cur_folder += 1
                     link = file["url"]

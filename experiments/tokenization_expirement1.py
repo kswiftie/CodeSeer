@@ -1,7 +1,8 @@
 import os
 from codeseer import RepoHandler, ReportCompiler
 
-my_handler = RepoHandler(open("../private_files/token.txt", "r").read())
+# my_handler = input()
+my_handler = RepoHandler(open("token.txt", "r").read())
 r = ReportCompiler(my_handler)
 
 
@@ -31,8 +32,8 @@ def walk_directory(directory_path):
                     (open(full_path, "r", encoding="utf-8").read(), solutiontype)
                 )
         r.make_report(
-            f"./LEETCODE DATASET (AST)/{problemname}",
-            {"ASTInspections": ["compare_files_hash"]},
+            f"./LEETCODE DATASET (CODET5+ DISTANCE)/{problemname}",
+            {"TokenizationInspections": ["compare_files_standart", "compare_files_nn"]},
             *inputs,
         )
 
