@@ -19,4 +19,6 @@ class Solution:
                     queue.append(neighbor)
             result[node] = sorted(result[node])
         return result
-#if you upvote this you will get a good news in 1 hour 
+
+
+# if you upvote this you will get a good news in 1 hour

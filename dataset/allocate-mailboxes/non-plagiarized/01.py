@@ -2,6 +2,7 @@ class Solution:
     def minDistance(self, houses: list[int], k: int) -> int:
         houses.sort()
         n = len(houses)
+
         @cache
         def helper(i, j, k):
             # from house i to house j, k boxes

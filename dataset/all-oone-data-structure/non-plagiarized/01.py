@@ -82,12 +82,16 @@ class AllOne:
     def getMaxKey(self) -> str:
         if self.tail.prev == self.head:
             return ""
-        return next(iter(self.tail.prev.keys))  # Get any key from the max frequency node
+        return next(
+            iter(self.tail.prev.keys)
+        )  # Get any key from the max frequency node
 
     def getMinKey(self) -> str:
         if self.head.next == self.tail:
             return ""
-        return next(iter(self.head.next.keys))  # Get any key from the min frequency node
+        return next(
+            iter(self.head.next.keys)
+        )  # Get any key from the min frequency node
 
 
 # Your AllOne object will be instantiated and called as such:

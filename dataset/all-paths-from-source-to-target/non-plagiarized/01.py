@@ -1,7 +1,15 @@
 from typing import list
 
+
 class Solution:
-    def findPaths(self, ans: list[list[int]], path: list[int], sr: int, des: int, adj: list[list[int]]):
+    def findPaths(
+        self,
+        ans: list[list[int]],
+        path: list[int],
+        sr: int,
+        des: int,
+        adj: list[list[int]],
+    ):
         if sr == des:
             ans.append(list(path))
             return

@@ -11,7 +11,9 @@ class Solution:
                 return 0
             if j == m:
                 return inf
-            return min(dp(k, j+1) + cost(i, k) for k in range(i+1, n+1-(m-j-1)))
+            return min(
+                dp(k, j + 1) + cost(i, k) for k in range(i + 1, n + 1 - (m - j - 1))
+            )
 
         houses.sort()
         n = len(houses)

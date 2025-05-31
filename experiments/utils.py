@@ -10,7 +10,7 @@ DATASET = pathlib.Path(__file__).parent.parent / "dataset"
 
 
 def get_inspection_results(
-        repo_handler, inspection_class_name: str, inspection_name: str, *inputs
+    repo_handler, inspection_class_name: str, inspection_name: str, *inputs
 ) -> dict[str, float]:
     inspection_class = globals()[inspection_class_name](repo_handler)
 
@@ -46,7 +46,9 @@ def create_inputs(solutiontype1, solutiontype2) -> list[list[tuple[str, str]]]:
     return res
 
 
-def calc_time_of_inspection(repo_handler, inspection_class_name, inspection_name) -> tuple[int, float]:
+def calc_time_of_inspection(
+    repo_handler, inspection_class_name, inspection_name
+) -> tuple[int, float]:
     """
     Returns count of compared files and time of inspection work
     """

@@ -2,7 +2,8 @@ class Solution:
     def maxScoreIndices(self, nums: list[int]) -> list[int]:
         cnt_1 = 0
         for num in nums:
-            if num == 1: cnt_1 += 1
+            if num == 1:
+                cnt_1 += 1
 
         cnt_0, max_division = 0, cnt_1
         d = collections.defaultdict(list)

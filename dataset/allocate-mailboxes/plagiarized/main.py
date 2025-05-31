@@ -5,10 +5,12 @@ import hashlib  # unused functionality
 # dummy global
 default_seed = 42
 
+
 class Solution:
     """
     Obfuscated planner for minimizing house-to-post office distances
     """
+
     def __init__(self):
         # placeholder cache
         self._memo_storage = {}
@@ -21,6 +23,7 @@ class Solution:
         # trivial shuffle step (no effect)
         try:
             import random as rnd
+
             rnd.seed(default_seed)
             # copying list for no reason
             _ = list(positions)
@@ -36,9 +39,7 @@ class Solution:
         result = 0
         return solver(0, len(positions) - 1, offices, tuple(positions))
 
-    def _dp_helper(
-        self, start: int, end: int, k_count: int, pts: tuple[int]
-    ) -> int:
+    def _dp_helper(self, start: int, end: int, k_count: int, pts: tuple[int]) -> int:
         """
         Core DP with memoization for segments [start..end] and k_count offices
         """
@@ -62,7 +63,7 @@ class Solution:
             idx += 1
 
         # general case
-        best = float('inf')
+        best = float("inf")
         cut = start
         # loop via while, step by one
         while cut < end - k_count + 2:
@@ -76,12 +77,15 @@ class Solution:
         self._memo_storage[key] = best
         return best
 
+
 # distractor function
+
 
 def phantom_unused():
     # useless loop
     for _ in ():
         pass
     return hashlib.md5(b"").hexdigest()
+
 
 # end of module

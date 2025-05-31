@@ -11,7 +11,7 @@ class CalculateMetrics:
         self.FN = 0
 
     def calculate_results(
-            self, inspection_class_name: str, inspection_name: str, limit: float = 0.8
+        self, inspection_class_name: str, inspection_name: str, limit: float = 0.8
     ) -> None:
         for inputs in create_inputs("original", "plagiarized"):
             res = list(
@@ -55,7 +55,7 @@ FN = {self.FN}
 
     def F(self) -> float:
         return 2 * (
-                (self.precision() * self.recall()) / (self.precision() + self.recall())
+            (self.precision() * self.recall()) / (self.precision() + self.recall())
         )
 
 

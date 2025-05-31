@@ -19,5 +19,5 @@ class Solution:
 
     def distanceK(self, root, tar, k: int) -> list[int]:
         self.ans, self.tar, self.k = [], tar, k
-        self.traverse_and_mark(root, dist=float('inf'))
+        self.traverse_and_mark(root, dist=float("inf"))
         return self.ans

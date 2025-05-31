@@ -17,6 +17,8 @@ class Solution:
             if kPrime == 0:
                 return inf
 
-            return min(dp(j, kPrime - 1) + minDistanceOneMailbox(j, i - 1) for j in range(i))
+            return min(
+                dp(j, kPrime - 1) + minDistanceOneMailbox(j, i - 1) for j in range(i)
+            )
 
         return dp(len(houses), k)

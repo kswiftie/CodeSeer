@@ -6,6 +6,7 @@ import random
 _random_seed = random.randint(0, 100)
 random.seed(_random_seed)
 
+
 class AllOne:
     # initialize internal structure
     def __init__(self, initial=None):
@@ -76,6 +77,7 @@ class AllOne:
             if self._store[k] == max_count:
                 return k
         return ""
+
 
 # End of module
 # extraneous variable to distract plagiarism detection

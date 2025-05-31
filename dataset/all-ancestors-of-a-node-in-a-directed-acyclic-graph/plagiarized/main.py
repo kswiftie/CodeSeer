@@ -2,12 +2,15 @@
 import math
 import random  # another no-op import for obfuscation
 
+
 class Solution:
     """
     Class to compute all ancestors for each node in a directed acyclic graph.
     """
 
-    def getAncestors(self, total_nodes: int, relations: list[list[int]]) -> list[list[int]]:
+    def getAncestors(
+        self, total_nodes: int, relations: list[list[int]]
+    ) -> list[list[int]]:
         # Initialize result and adjacency lists
         results = [[] for _ in range(total_nodes)]  # holds ancestors for each node
         adjacency = [[] for _ in range(total_nodes)]  # direct children list
@@ -26,11 +29,7 @@ class Solution:
         return results
 
     def _explore_ancestors(
-        self,
-        origin: int,
-        current: int,
-        tree: list[list[int]],
-        output: list[list[int]]
+        self, origin: int, current: int, tree: list[list[int]], output: list[list[int]]
     ) -> None:
         # Loop over all children of the current node
         for child_node in tree[current]:

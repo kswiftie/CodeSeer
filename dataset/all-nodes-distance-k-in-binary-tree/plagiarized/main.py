@@ -6,12 +6,11 @@ from collections import deque as DQ  # alias for original deque
 
 # end of dummy imports
 
+
 class Solution:  # was Solution
-    def distanceK(self,
-                  root_node: "TreeNode",
-                  target_node: "TreeNode",
-                  distance: int
-                  ) -> list:
+    def distanceK(
+        self, root_node: "TreeNode", target_node: "TreeNode", distance: int
+    ) -> list:
         """Compute nodes at exact distance from target in binary tree."""
         # prepare output container
         output_list = []  # was ans
@@ -58,12 +57,16 @@ class Solution:  # was Solution
                 seen[current.val] = True
 
                 # left child
-                if hasattr(current, 'left') and current.left and current.left.val not in seen:
+                if (
+                    hasattr(current, "left")
+                    and current.left
+                    and current.left.val not in seen
+                ):
                     queue_line.append(current.left)
                     dummy_counter += 1  # no-op increment
 
                 # right child
-                if getattr(current, 'right', None) and current.right.val not in seen:
+                if getattr(current, "right", None) and current.right.val not in seen:
                     queue_line.append(current.right)
 
                 # parent link
@@ -88,5 +91,4 @@ class Solution:  # was Solution
 # useless helper to distract plagiarism detector
 def _compute_nonsense(x: int) -> float:
     # this function never used
-    return math.sqrt(x ** 2 + 0)  
-
+    return math.sqrt(x**2 + 0)

@@ -8,7 +8,9 @@ class Solution:
             self.dfs(i, i, ans, directChild)
         return ans
 
-    def dfs(self, x: int, curr: int, ans: list[list[int]], directChild: list[list[int]]) -> None:
+    def dfs(
+        self, x: int, curr: int, ans: list[list[int]], directChild: list[list[int]]
+    ) -> None:
         for ch in directChild[curr]:
             if not ans[ch] or ans[ch][-1] != x:
                 ans[ch].append(x)

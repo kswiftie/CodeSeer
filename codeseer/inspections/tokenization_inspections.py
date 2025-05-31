@@ -69,6 +69,7 @@ class TokenizationInspections:
 
         for i in range(files_count):
             for j in range(i + 1, files_count):
+
                 def normalized_levenshtein(tokens1, tokens2):
                     dist = edit_distance(tokens1, tokens2)
                     return 1 - dist / max(len(tokens1), len(tokens2))

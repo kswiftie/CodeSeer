@@ -7,9 +7,11 @@ class Solution:
 
         def dfs(x, curr):
             for ch in direct_child[curr]:
-                if ans[ch] and ans[ch][-1] == x: continue
+                if ans[ch] and ans[ch][-1] == x:
+                    continue
                 ans[ch].append(x)
-                dfs(x, ch) 
+                dfs(x, ch)
 
-        for i in range(n): dfs(i, i)
+        for i in range(n):
+            dfs(i, i)
         return ans
