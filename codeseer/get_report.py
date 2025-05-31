@@ -45,7 +45,7 @@ class ReportCompiler:
         self.repo_handler = repo_handler
 
     def make_report(
-            self, path: str = "./", inspections_to_do: dict[str, list[str]] = {}, *inputs
+        self, path: str = "./", inspections_to_do: dict[str, list[str]] = {}, *inputs
     ) -> None:
         """
         A function for creating reports.
@@ -233,7 +233,7 @@ function toggleContent(id) {
 </section>
             """
                 if (inspections_data[inspection_class_name + "Heading"])
-                   and (inspections_data[inspection_class_name + "Content"])
+                and (inspections_data[inspection_class_name + "Content"])
                 else ""
             )
 
@@ -255,7 +255,7 @@ function toggleContent(id) {
                     self.repo_handler
                 )
                 inspections_data[inspection_class_name + "Content"] += (
-                        getattr(inspection, "handle_" + inspection_name)(*inputs) + "\n"
+                    getattr(inspection, "handle_" + inspection_name)(*inputs) + "\n"
                 )
 
         body = f"""

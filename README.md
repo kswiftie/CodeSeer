@@ -1,6 +1,6 @@
 # About CodeSeer
 
-A project to search for plagiarism in a Python code or project.
+A project to check Python codes for plagiarism.
 CodeSeer uses different checks to analyze program codes for similarity.
 For more information, look at /docs.
 

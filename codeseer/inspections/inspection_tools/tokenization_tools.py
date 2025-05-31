@@ -21,8 +21,14 @@ def normalize_code(code: str):
     result = []
     g = tokenize.tokenize(BytesIO(code.encode("utf-8")).readline)
     for toknum, tokval, *_ in g:
-        if toknum in {tokenize.ENCODING, tokenize.NL, tokenize.NEWLINE, tokenize.COMMENT, tokenize.INDENT,
-                      tokenize.DEDENT}:
+        if toknum in {
+            tokenize.ENCODING,
+            tokenize.NL,
+            tokenize.NEWLINE,
+            tokenize.COMMENT,
+            tokenize.INDENT,
+            tokenize.DEDENT,
+        }:
             continue
         elif toknum == tokenize.ENDMARKER:
             break
@@ -106,7 +112,7 @@ def cosine_between_tensors(tensor1: torch.Tensor, tensor2: torch.Tensor) -> floa
 
 
 def cos_similarity_counter_modififed(
-        counter1: Counter[str], counter2: Counter[str]
+    counter1: Counter[str], counter2: Counter[str]
 ) -> float:
     """
     Cosine between two vectors of counter.
@@ -127,8 +133,8 @@ def cos_similarity_counter_modififed(
     dot_product = sum(v1 * v2 for v1, v2 in zip(vec1, vec2))
 
     # Calculating their norms
-    norm1 = sum(v ** 2 for v in vec1) ** 0.5
-    norm2 = sum(v ** 2 for v in vec2) ** 0.5
+    norm1 = sum(v**2 for v in vec1) ** 0.5
+    norm2 = sum(v**2 for v in vec2) ** 0.5
 
     # Calculating the angle between the vectors
     # 2 * norm1 * norm2 because coordinates of the vectors are always non-negative

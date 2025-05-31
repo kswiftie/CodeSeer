@@ -21,7 +21,7 @@ def remove_comments(code: str) -> str:
         """
         if isinstance(node, ast.Expr):
             if isinstance(node.value, ast.Constant) and isinstance(
-                node.value.value, str
+                    node.value.value, str
             ):
                 return None
 
@@ -48,28 +48,23 @@ def remove_comments(code: str) -> str:
 
 def api_to_github_url(api_request: str) -> str:
     """
-    The function translates the API request to GitHub into a link to GitHub
+    Converts a GitHub API URL into a GitHub web URL.
 
     Args:
-        api_request:
-            Api request to GitHub
+        api_request (str): GitHub API URL.
 
     Returns:
-        string - the link on GitHub
+        str: GitHub web URL.
     """
 
-    pattern = r"https://api\.github\.com/repos/([^/]+)/([^/]+)/contents/(.*)"
+    api_pattern = r"https://api.github.com/repos/([^/]+)/([^/]+)/contents/(.*)"
 
-    match = re.match(pattern, api_request)
-    if match is None:
-        raise ValueError("Invalid API request passed to the function")
+    match = re.match(api_pattern, api_request)
+    if match:
+        username, repo_name, file_path = match.groups()
+        return f"https://github.com/{username}/{repo_name}/blob/main/{file_path}"
 
-    owner = match.group(1)
-    repo = match.group(2)
-    path = match.group(3)
-
-    github_url = f"https://github.com/{owner}/{repo}/blob/main/{path}"
-    return github_url
+    return api_request
 
 
 def get_the_name_of_link(link: str) -> str:

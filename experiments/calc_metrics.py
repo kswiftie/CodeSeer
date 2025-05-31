@@ -11,7 +11,7 @@ class CalculateMetrics:
         self.FN = 0
 
     def calculate_results(
-        self, inspection_class_name: str, inspection_name: str
+            self, inspection_class_name: str, inspection_name: str, limit: float = 0.8
     ) -> None:
         for inputs in create_inputs("original", "plagiarized"):
             res = list(
@@ -19,7 +19,7 @@ class CalculateMetrics:
                     self.repo_handler, inspection_class_name, inspection_name, *inputs
                 ).values()
             )[0]
-            if res > 0.6:
+            if res > limit:
                 self.TP += 1
             else:
                 self.FN += 1
@@ -30,7 +30,7 @@ class CalculateMetrics:
                     self.repo_handler, inspection_class_name, inspection_name, *inputs
                 ).values()
             )[0]
-            if res > 0.6:
+            if res > limit:
                 self.FP += 1
             else:
                 self.TN += 1
@@ -55,16 +55,16 @@ FN = {self.FN}
 
     def F(self) -> float:
         return 2 * (
-            (self.precision() * self.recall()) / (self.precision() + self.recall())
+                (self.precision() * self.recall()) / (self.precision() + self.recall())
         )
 
 
 if __name__ == "__main__":
     my_handler = RepoHandler(open("./token.txt", "r").read())
     calculator = CalculateMetrics(my_handler)
-    # calculator.calculate_results("TokenizationInspections", "compare_files_standart")
-    calculator.calculate_results("TokenizationInspections", "compare_files_nn")
-    # calculator.calculate_results("ASTInspections", "compare_files")
+    # calculator.calculate_results("TokenizationInspections", "compare_files_standart", 0.8)
+    calculator.calculate_results("TokenizationInspections", "compare_files_nn", 0.8)
+    # calculator.calculate_results("ASTInspections", "compare_files", 0.6)
     print(f"Accuracy: {calculator.accuracy()}")
     print(f"Recall: {calculator.recall()}")
     print(f"Precision: {calculator.precision()}")

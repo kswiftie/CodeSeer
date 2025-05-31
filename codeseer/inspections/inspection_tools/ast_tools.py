@@ -33,8 +33,8 @@ NODE_NORMALIZATION = {
     "Attribute": "Access",
     "Subscript": "Access",
     # "BinOp": "BinOp",
-    "UnaryOp": "BinOp", # hmm
-    "BoolOp": "BinOp" # hmm
+    "UnaryOp": "BinOp",  # not sure
+    "BoolOp": "BinOp",  # not sure
 }
 
 
@@ -135,7 +135,7 @@ def hash_tree(tree: nx.DiGraph, node: int) -> str:
     return hashlib.sha256(combined.encode()).hexdigest()
 
 
-def hash_tree_structure(tree: nx.DiGraph, root: int, parent: int = None) -> str:
+def hash_tree_structure(tree: nx.DiGraph, root: int, parent: int | None = None) -> str:
     children = [n for n in tree.successors(root) if n != parent]
 
     child_hashes = [hash_tree_structure(tree, child, root) for child in children]
@@ -144,7 +144,7 @@ def hash_tree_structure(tree: nx.DiGraph, root: int, parent: int = None) -> str:
 
     structure_str = "(" + "".join(child_hashes) + ")"
 
-    return hashlib.sha256(structure_str.encode('utf-8')).hexdigest()
+    return hashlib.sha256(structure_str.encode("utf-8")).hexdigest()
 
 
 def generate_subtrees_hashes(tree: nx.DiGraph) -> list[str]:
@@ -168,7 +168,12 @@ def generate_subtrees_hashes(tree: nx.DiGraph) -> list[str]:
         cur_node_data = tree.nodes[cur_node_id]
 
         if cur_node_data["label"] in avaliable_roots:
-            res.extend([hash_tree(subtree, cur_node_id) for subtree in get_branches(tree, cur_node_id)])
+            res.extend(
+                [
+                    hash_tree(subtree, cur_node_id)
+                    for subtree in get_branches(tree, cur_node_id)
+                ]
+            )
             # res.extend([hash_tree_structure(subtree, cur_node_id) for subtree in get_branches(tree, cur_node_id)])
             # res.append(hash_tree_structure(get_subtree(tree, cur_node_id), cur_node_id))
 
@@ -192,8 +197,8 @@ def get_the_coeff_part(coeff: float | int) -> str:
         The .html part for this coefficient.
     """
 
-    if coeff <= 50:
+    if coeff <= 40:
         return f"""<span class="green">{coeff}%</span>"""
-    if coeff <= 80:
+    if coeff <= 60:
         return f"""<span class="orange">{coeff}%</span>"""
     return f"""<span class="red">{coeff}%</span>"""

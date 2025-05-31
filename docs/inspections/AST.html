@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verification Class Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .metrics {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .metrics li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="section">
+        <h2>How verification works</h2>
+        <p>
+            A program code is accepted as input and then an Abstract Syntax Tree is constructed from it.<br>
+            Subtrees are then built from specific vertices such as <code>FunctionDef</code>, <code>If</code>,
+            <code>Loop</code>, etc.<br>
+            These subtrees are hashed, and the resulting sets of hashes are compared.
+        </p>
+
+        <h2>Results on Dataset</h2>
+        <p>This verification method uses AST-based hashing and subtree comparison.</p>
+
+        <ul class="metrics">
+            <li><strong>Accuracy:</strong> 0.7903</li>
+            <li><strong>Recall:</strong> 0.7097</li>
+            <li><strong>Precision:</strong> 0.8462</li>
+            <li><strong>F1 Score:</strong> 0.7719</li>
+            <li><strong>Count of pairs:</strong> 124</li>
+            <li><strong>Time:</strong> 39.87 seconds</li>
+        </ul>
+
+        <h2>Available Checks</h2>
+        <p>The following checks are available at the moment:</p>
+        <ul>
+            <li><strong>ASTInspections:</strong>
+                <ul>
+                    <li>compare_files</li>
+                    <li>compare_folders</li>
+                    <li>compare_files_with_folders</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+</body>
+</html>

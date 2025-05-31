@@ -78,6 +78,7 @@ class RepoHandler:
         api_request = (
             f"https://api.github.com/repos/{user}/{repo}/contents/{path}?ref={branch}"
         )
+
         return api_request
 
     @allow_python_code

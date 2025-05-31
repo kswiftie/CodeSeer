@@ -1,4 +1,4 @@
-import os, pathlib
+import os, pathlib, time
 from codeseer import RepoHandler
 from codeseer.inspections import (
     BasicInspections,
@@ -10,7 +10,7 @@ DATASET = pathlib.Path(__file__).parent.parent / "dataset"
 
 
 def get_inspection_results(
-    repo_handler, inspection_class_name: str, inspection_name: str, *inputs
+        repo_handler, inspection_class_name: str, inspection_name: str, *inputs
 ) -> dict[str, float]:
     inspection_class = globals()[inspection_class_name](repo_handler)
 
@@ -44,3 +44,40 @@ def create_inputs(solutiontype1, solutiontype2) -> list[list[tuple[str, str]]]:
         res.append(cur_inputs)
 
     return res
+
+
+def calc_time_of_inspection(repo_handler, inspection_class_name, inspection_name) -> tuple[int, float]:
+    """
+    Returns count of compared files and time of inspection work
+    """
+    count_of_pairs, runtime = 0, 0
+    dataset_inputs = create_inputs("original", "plagiarized")
+    count_of_pairs += len(dataset_inputs)
+    start = time.time()
+    for inputs in dataset_inputs:
+        res = list(
+            get_inspection_results(
+                repo_handler, inspection_class_name, inspection_name, *inputs
+            ).values()
+        )[0]
+    end = time.time()
+    runtime += end - start
+    dataset_inputs = create_inputs("original", "non-plagiarized")
+    count_of_pairs += len(dataset_inputs) * 3
+    start = time.time()
+    for inputs in dataset_inputs:
+        res = list(
+            get_inspection_results(
+                repo_handler, inspection_class_name, inspection_name, *inputs
+            ).values()
+        )[0]
+    end = time.time()
+    runtime += end - start
+    return count_of_pairs, runtime
+
+
+# if __name__ == "__main__":
+#     my_handler = RepoHandler(open("./token.txt", "r").read())
+#     print(calc_time_of_inspection(my_handler, "ASTInspections", "compare_files"))
+#     print(calc_time_of_inspection(my_handler, "TokenizationInspections", "compare_files_standart"))
+#     print(calc_time_of_inspection(my_handler, "TokenizationInspections", "compare_files_nn"))

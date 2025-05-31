@@ -37,46 +37,81 @@
 </head>
 <body>
 
-    <h1>Usage Guide</h1>
+<h1>Usage Guide</h1>
 
-    <p>You can find the usage examples in the <code>/examples</code> directory (currently only <code>tokenization_inspections_usage.py</code> is complete).</p>
+<p>You can find the usage examples in the <code>/examples</code> directory.</p>
 
-    <h2>1. Initial Setup</h2>
-    <p>To begin, import the following classes from Codeseer:</p>
-    <pre><code>from codeseer import RepoHandler, ReportCompiler</code></pre>
+<h2>1. Initial Setup</h2>
+<p>To begin, import the following classes from Codeseer:</p>
+<pre><code>from codeseer import RepoHandler, ReportCompiler</code></pre>
 
-    <p>Next, initialize the instances:</p>
-    <ul>
-        <li><strong>RepoHandler</strong>: Pass your GitHub token to the constructor.</li>
-        <li><strong>ReportCompiler</strong>: Pass the earlier created instance of <code>RepoHandler</code> to the constructor.</li>
-    </ul>
+<p>Next, initialize the instances:</p>
+<ul>
+    <li><strong>RepoHandler</strong>: Pass your GitHub token to the constructor.</li>
+    <li><strong>ReportCompiler</strong>: Pass the earlier created instance of <code>RepoHandler</code> to the
+        constructor.
+    </li>
+</ul>
 
-    <h2>2. Generating a Report</h2>
-    <p>Now you can call the <code>make_report</code> method from the <code>ReportCompiler</code> instance:</p>
-    <ul>
-        <li>Provide the path where the report will be saved (including the filename).</li>
-        <li>Pass a list of checks as a dictionary, where the key is the class name and the value is the list of checks for that class.</li>
-        <li>Pass a list of GitHub links or code snippets for which the checks should be performed. You can also pass a tuple with the first element as the link/code and the second as a custom name for the item. Alternatively, you can let Codeseer generate the names automatically.</li>
-    </ul>
+<h2>2. Generating a Report</h2>
+<p>Now you can call the <code>make_report</code> method from the <code>ReportCompiler</code> instance:</p>
+<ul>
+    <li>Provide the path where the report will be saved (including the filename).</li>
+    <li>Pass a list of checks as a dictionary, where the key is the class name and the value is the list of checks for
+        that class.
+    </li>
+    <li>Pass a list of GitHub links or code snippets for which the checks should be performed.
+        You can also pass a pair (tuple) with the first element as the link/code and the second as a custom name for the
+        item.
+        Alternatively, you can let CodeSeer generate the names automatically.
+    </li>
+</ul>
 
-    <h2>3. Available Checks</h2>
-    <p>The following checks are available at the moment:</p>
-    <ul>
-        <li><strong>TokenizationInspections:</strong>
-            <ul>
-                <li>compare_files_standart</li>
-                <li>compare_folders_standart</li>
-                <li>compare_files_nn</li>
-                <li>compare_folders_nn</li>
-                <li>compare_files_with_folders_standart</li>
-                <li>compare_files_with_folders_nn</li>
-            </ul>
-        </li>
-    </ul>
+<h2>3. Types of Verification</h2>
+<p>The system supports different types of verification depending on the input:</p>
+<ul>
+    <li><strong>compare_folders</strong> — compares the contents of two directories, analyzing all relevant files
+        inside, each with each.
+    </li>
+    <li><strong>compare_files</strong> — compares the transferred files or code snippets.</li>
+    <li><strong>compare_files_with_folders</strong> — compares each of the list of files with the contents of each
+        folder.
+    </li>
+</ul>
 
-    <div class="note">
-        <strong>Note:</strong> For detailed information about the checks, refer to the documentation in <code>/docs</code>.
-    </div>
+<h2>4. Providing Input Data</h2>
+<p>Now, let's go into more detail on how to pass input data. After specifying the check classes and the types of checks,
+    you need to provide the input data to which the checks will be applied. Here's how it is done for each type of
+    check:</p>
+
+<ul>
+    <li><strong>compare_folders</strong><br>
+        You need to provide links to folders on GitHub (entire repositories are also allowed).
+    </li>
+
+    <li><strong>compare_files</strong><br>
+        You can pass data in several ways:
+        <ol>
+            <li>Provide a list of GitHub links to individual files.</li>
+            <li>Provide a list of code snippets as plain text strings.</li>
+        </ol>
+        You can combine both types of input. Additionally, for each link or code snippet, you can specify a name that
+        will be displayed in the report. To do so, pass the data as a pair: <code>(link_or_code, name)</code>.
+        Otherwise, CodeSeer will generate names automatically.
+    </li>
+
+    <li><strong>compare_files_with_folders</strong><br>
+        You must pass two lists:
+        <ul>
+            <li>The first list contains inputs formatted like for <code>compare_files</code>.</li>
+            <li>The second list contains folder links formatted like for <code>compare_folders</code>.</li>
+        </ul>
+    </li>
+</ul>
+
+<div class="note">
+    <strong>Note:</strong> For detailed information about the verifications, refer to the documentation in <code>/docs/inspections</code>.
+</div>
 
 </body>
 </html>

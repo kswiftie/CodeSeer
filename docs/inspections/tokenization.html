@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verification Class Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .section {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .metrics {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .metrics li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Verification Class Overview</h1>
+
+    <div class="section">
+        <p>This verification class uses tokenization to find similarities between programs.</p>
+
+        <h2>Types of Checks</h2>
+
+        <h3>1. Standard</h3>
+        <p>Builds sorted sequences of tokens for each program. Calculates Levenshtein distance and the angle between them.</p>
+        <ul class="metrics">
+            <li><strong>Accuracy:</strong> 0.532</li>
+            <li><strong>Recall:</strong> 0.419</li>
+            <li><strong>Precision:</strong> 0.542</li>
+            <li><strong>F1 Score:</strong> 0.473</li>
+            <li><strong>Count of pairs:</strong> 124</li>
+            <li><strong>Time:</strong> 50.51 seconds</li>
+        </ul>
+
+        <h3>2. NN (Neural Network Based)</h3>
+        <p>This method uses Unicode-based token sequences and generates embeddings. Then calculates angle and Euclidean distance between embeddings.</p>
+        <ul class="metrics">
+            <li><strong>Accuracy:</strong> 0.355</li>
+            <li><strong>Recall:</strong> 0.258</li>
+            <li><strong>Precision:</strong> 0.320</li>
+            <li><strong>F1 Score:</strong> 0.286</li>
+            <li><strong>Count of pairs:</strong> 124</li>
+            <li><strong>Time:</strong> 211.43 seconds</li>
+        </ul>
+
+    <h2>Available Checks</h2>
+        <p>The following checks are available at the moment:</p>
+        <ul>
+            <li><strong>TokenizationInspections:</strong>
+                <ul>
+                    <li>compare_files_standart</li>
+                    <li>compare_folders_standart</li>
+                    <li>compare_files_with_folders_standart</li>
+                    <li>compare_files_nn</li>
+                    <li>compare_folders_nn</li>
+                    <li>compare_files_with_folders_nn</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
